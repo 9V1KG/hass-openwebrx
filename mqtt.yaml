@@ -1,0 +1,22 @@
+ sensor:
+  - name: "OpenWebRX-FT8"
+    state_topic: "openwebrx/FT8"
+    icon: mdi:radio
+    value_template: '{{ ((value_json.freq | float) / 1000) | int }}'
+    unit_of_measurement: "kHz"
+    json_attributes_topic: "openwebrx/FT8"
+    device:
+      name: OpenWebRX
+      identifiers: "webrx-monitoring"
+      manufacturer: "9v1kg"
+
+  - name: "OpenWebRX-RX"
+    state_topic: "openwebrx/RX"
+    icon: mdi:radio
+    value_template: '{{ value_json.profile }}'
+    json_attributes_topic: "openwebrx/RX"
+    device:
+      name: OpenWebRX
+      identifiers: "webrx-monitoring"
+      manufacturer: "9v1kg"
+
