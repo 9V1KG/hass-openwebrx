@@ -10,6 +10,7 @@ If not already done, in your home assistant configuration file `configuration.ya
 rest: !include rest.yaml
 mqtt: !include mqtt.yaml
 ```
+Add the `rest.yaml` and `mqtt.yaml` files to your hass configuration directory.
 
 ## Additional Template Sensors
 
