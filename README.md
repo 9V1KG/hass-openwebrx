@@ -3,13 +3,22 @@ Integration of OpenWebRX+ under Homeassistant (hass).
 Adding a ping sensor, two mqtt sensors and one rest sensor into the homeassistant configuration 
 in order to display the OpenWebRX+ status on an entity card.
 
-## Procedure
+## Rest and Mqtt Sensors
 
-If not already done, in your configuration file add:
+If not already done, in your home assistant configuration file `configuration.yaml` add:
 ```
 rest: !include rest.yaml
 mqtt: !include mqtt.yaml
 ```
+
+## Additional Template Sensors
+
+Add all lines from the file
+```
+template-add.yaml
+```
+to your hass template file `template.yaml`.
+
 To check the online status of your OpenWebRX, you also need to add the **Ping (ICMP)** Integration. 
 * Go to *Settings > Devices & Services*. 
 * In the bottom right corner, select the *Add Integration* button.
