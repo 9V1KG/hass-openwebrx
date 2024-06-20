@@ -1,7 +1,8 @@
 # hass-openwebrx
-Integration of OpenWebRX+ under Homeassistant (hass).
+Integration of [OpenWebRX+](https://github.com/luarvique/ppa) under Homeassistant (hass).
 Adding a ping sensor, two mqtt sensors and one rest sensor into the homeassistant configuration 
 in order to display the OpenWebRX+ status on an entity card.
+
 
 ## Rest and Mqtt Sensors
 
