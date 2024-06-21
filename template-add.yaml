@@ -30,3 +30,12 @@
       {{ "unavailable" }}
       {% endif %}
     icon: mdi:radio
+
+# Shows all connected SDRs
+- sensor:
+  - name: sdr_connected
+    state: >
+      {% for j in state_attr( 'sensor.openwebrx_version', 'sdrs') -%}
+      {{ j.name }}
+      {% endfor %}
+    icon: mdi:radio

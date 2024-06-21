@@ -11,3 +11,15 @@
       icon: mdi:account-multiple-outline
       availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
 
+# webrx sdrs status
+- resource: http://9v1kg.bpmsg.com:8073/status.json
+  sensor:
+    - name: "OpenWebRX_version  "
+      value_template: "{{ value_json.version }}"
+      json_attributes:
+        - receiver
+        - max_clients
+        - sdrs
+      icon: mdi:radio
+      availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
+
