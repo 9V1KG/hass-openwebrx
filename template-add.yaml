@@ -1,6 +1,9 @@
 # OpenWebRX additional template sensors based on attributes
+# All depend on Ping sensor 'binary_sensor.webrx_lan' to check connection
+# of the WebSDR.
 
 # Shows the last FT8 decoded callsign
+# Depends on mqtt sensor 'sensor.openwebrx_ft8'
 - sensor:
   - name: webrx-ft8-callsign
     state: >
@@ -12,6 +15,7 @@
     icon: mdi:radio
 
 # Time elapsed since last FT8 decode
+# Depends on mqtt sensor 'sensor.openwebrx_ft8'
 - sensor:
   - name: webrx-ft8-min_ago
     device_class: duration
@@ -21,6 +25,7 @@
     icon: mdi:clock
 
 # Shows the selected SDR of the last profile switch
+# Depends on mqtt sensor 'sensor.openwebrx_rx'
 - sensor:
   - name: webrx-rx-source
     state: >
@@ -32,6 +37,7 @@
     icon: mdi:radio
 
 # Shows all connected SDRs
+# Depends on rest sensor 'sensor.openwebrx_version'
 - sensor:
   - name: sdr_connected
     state: >

@@ -1,4 +1,6 @@
- sensor:
+sensor:
+# Shows last FT8 frequency in kHz of decoded FT8 signal.
+# Attributes contain timestamp, callsign etc.
   - name: "OpenWebRX-FT8"
     state_topic: "openwebrx/FT8"
     icon: mdi:radio
@@ -8,8 +10,10 @@
     device:
       name: OpenWebRX
       identifiers: "webrx-monitoring"
-      manufacturer: "9v1kg"
+      manufacturer: "klausgoepel"
 
+# Shows last profile switched to. 
+# Attributes contain source (SDR), e.g. Airspy
   - name: "OpenWebRX-RX"
     state_topic: "openwebrx/RX"
     icon: mdi:radio
@@ -18,5 +22,5 @@
     device:
       name: OpenWebRX
       identifiers: "webrx-monitoring"
-      manufacturer: "9v1kg"
+      manufacturer: "klausgoepel"
 
