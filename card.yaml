@@ -1,0 +1,52 @@
+# Combination of 'vertical stack card', mushroom-template-card, 
+# conditional card and entities card.
+type: vertical-stack
+cards:
+  - type: custom:mushroom-template-card
+    primary: OpenWebRX+
+    secondary: '{{ state_attr( ''sensor.sdr_connected'', ''sdr'') }}'
+    icon: mdi:radio-tower
+    entity: |
+      sensor.sdr_connected binary_sensor.webrx_lan
+    icon_color: |
+      {% if is_state('binary_sensor.webrx_lan','on') -%}
+       [30,150,0]
+      {%- endif %}
+    tap_action:
+      action: call-service
+      service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.webrx_details
+      data: {}
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: input_boolean.webrx_details
+        state: 'on'
+    card:
+      type: entities
+      entities:
+        - entity: binary_sensor.webrx_lan
+          name: OpenWebRX
+          tap_action:
+            action: url
+            url_path: http://9v1kg.bpmsg.com:8073/
+        - entity: sensor.openwebrx_version
+        - entity: sensor.sdr_connected
+          name: Number of connected SDRs
+        - entity: sensor.openwebrx_users
+          name: Number of current users
+        - entity: sensor.webrx_rx_source
+          name: Last SDR switched
+        - entity: sensor.openwebrx_rx
+          name: Band selected
+        - entity: sensor.webrx_ft8_callsign
+          name: Last decoded call (FT8)
+        - entity: sensor.openwebrx_ft8
+          name: On frequency
+        - entity: sensor.webrx_ft8_min_ago
+          name: Time ago (hh:mm:ss)
+        - entity: input_boolean.webrx_reboot
+          name: OpenWebRX reboot
+      state_color: true
+      title: WebRX status
