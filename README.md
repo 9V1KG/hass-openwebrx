@@ -1,6 +1,6 @@
 # hass-openwebrx
 Integration of [OpenWebRX+](https://github.com/luarvique/ppa) under Homeassistant (hass).
-Adding a sensors (mqtt, rest and template sensors)into the homeassistant configuration 
+Adding sensors (mqtt, rest and template sensors) into the homeassistant configuration 
 in order to display the OpenWebRX+ status on an entity card.
 
 ## Prerequisites
@@ -56,6 +56,9 @@ You then need to reload the yaml configuration. Go to *Developer tools > YAML* a
 #### Ping (ICMP) sensors
 * `binary_sensor.webrx_lan`   OpenWebRX Online status     
 The name of the Ping sensor depends on the name you gave in the ping integration.
+
+### Homeassistant entities card
+The file `card.yaml` contains an example, how the OpenWebRX status could be displayed. With *ADD CARD* select *MANUAL* and copy the yaml code to the card configuration.
 
 ## Note
 Still under development.
