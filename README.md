@@ -1,6 +1,6 @@
 # hass-openwebrx
 Integration of [OpenWebRX+](https://github.com/luarvique/ppa) under Homeassistant (hass).
-Adding a ping sensor, two mqtt sensors and one rest sensor into the homeassistant configuration 
+Adding a sensors (mqtt, rest and template sensors into the homeassistant configuration 
 in order to display the OpenWebRX+ status on an entity card.
 
 ## Prerequisites
@@ -43,18 +43,18 @@ Add the `rest.yaml`, `mqtt.yaml` and `template.yaml` files to your hass configur
 
 You then need to reload the yaml configuration. Go to *Developer tools > YAML* and look for **REST ENTITIES AND NOTIFY SERVICES**  and **MANUALLY CONFIGURED MQTT ENTITIES** and **TEMPLATE ENTITIES** Click on them to reload. You should then be able to find the new sensors under *Developer tools > states*. The following entities should be available:
 #### MQTT sensors
-* sensor.openwebrx_ft8
-* sensor.openwebrx_rx
+* `sensor.openwebrx_ft8` Frequency of the latest decoded FT8 signal in kHz
+* `sensor.openwebrx_rx`  Latest profile switched to
 #### Rest sensors
-* sensor.openwebrx_users
-* sensor.openwebrx_version
+* `sensor.openwebrx_users`   Number of connected users
+* `sensor.openwebrx_version` Version of the OpenWebRX+ software
 #### Template sensors
-* sensor.webrx_ft8_callsign
-* sensor.webrx_ft8_min_ago
-* sensor.webrx_rx_source
-* sensor.sdr_connected
+* `sensor.webrx_ft8_callsign` Latest FT-8 call sign decoded 
+* `sensor.webrx_ft8_min_ago`  Time since last FT-8 decode in minutes
+* `sensor.webrx_rx_source`    Last SDR switched
+* `sensor.sdr_connected`      List of connected SDRs
 #### Ping (ICMP) sensors
-* binary_sensor.webrx_lan
+* `binary_sensor.webrx_lan`   OpenWebRX Online status
 The name of the Ping sensor depends on the name you gave in the ping integration.
 
 ## Note
