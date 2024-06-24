@@ -1,6 +1,6 @@
 # hass-openwebrx
 Integration of [OpenWebRX+](https://github.com/luarvique/ppa) under Homeassistant (hass).
-Adding a sensors (mqtt, rest and template sensors into the homeassistant configuration 
+Adding a sensors (mqtt, rest and template sensors)into the homeassistant configuration 
 in order to display the OpenWebRX+ status on an entity card.
 
 ## Prerequisites
@@ -19,7 +19,7 @@ template: !include templates.yaml
 To check the online status of your OpenWebRX, you also need to add the **Ping (ICMP)** Integration. 
 * Go to *Settings > Devices & Services*. 
 * In the bottom right corner, select the *Add Integration* button.
-* From the list, select **Ping (ICMP)**.
+* From the list, select **Ping (ICMP)**.   
 Follow the instructions on screen to complete the setup. Add the hostname or IP address of your OpenWebRX. 
 It will then appear as a binary sensor with status *on*, when connected, and *off*, when offline.
 In the file `rest.yaml` modify `binary_sensor.webrx_lan` under `availability:` 
@@ -39,23 +39,23 @@ Go to OpenWebRX settings. Under *Settings/Spotting and Reporting* scroll down to
 
 ### Homeassistant configuration
 
-Add the `rest.yaml`, `mqtt.yaml` and `template.yaml` files to your hass configuration directory, **or**modify and append your existing rest, mqtt and template yaml files with the corresponding sensor definitions from the yaml files in the repository.
+Add the `rest.yaml`, `mqtt.yaml` and `template.yaml` files to your hass configuration directory, **or** modify and append your existing rest, mqtt and template yaml files with the corresponding sensor definitions from the yaml files in the repository.
 
-You then need to reload the yaml configuration. Go to *Developer tools > YAML* and look for **REST ENTITIES AND NOTIFY SERVICES**  and **MANUALLY CONFIGURED MQTT ENTITIES** and **TEMPLATE ENTITIES** Click on them to reload. You should then be able to find the new sensors under *Developer tools > states*. The following entities should be available:
+You then need to reload the yaml configuration. Go to *Developer tools > YAML* and look for **REST ENTITIES AND NOTIFY SERVICES**, **MANUALLY CONFIGURED MQTT ENTITIES** and **TEMPLATE ENTITIES**. Click on them to reload. You should then be able to find the new sensors under *Developer tools > states*. The following entities should be available:
 #### MQTT sensors
-* `sensor.openwebrx_ft8` Frequency of the latest decoded FT8 signal in kHz
-* `sensor.openwebrx_rx`  Latest profile switched to
+* `sensor.openwebrx_ft8` Frequency of the latest decoded FT8 signal in kHz.
+* `sensor.openwebrx_rx`  Latest profile switched to.
 #### Rest sensors
-* `sensor.openwebrx_users`   Number of connected users
-* `sensor.openwebrx_version` Version of the OpenWebRX+ software
+* `sensor.openwebrx_users`   Number of connected users.
+* `sensor.openwebrx_version` Version of the OpenWebRX+ software.
 #### Template sensors
-* `sensor.webrx_ft8_callsign` Latest FT-8 call sign decoded 
-* `sensor.webrx_ft8_min_ago`  Time since last FT-8 decode in minutes
-* `sensor.webrx_rx_source`    Last SDR switched
-* `sensor.sdr_connected`      List of connected SDRs
+* `sensor.webrx_ft8_callsign` Latest FT-8 call sign decoded.
+* `sensor.webrx_ft8_min_ago`  Time since last FT-8 decode in minutes.
+* `sensor.webrx_rx_source`    Last SDR switched.
+* `sensor.sdr_connected`      List of connected SDRs.
 #### Ping (ICMP) sensors
-* `binary_sensor.webrx_lan`   OpenWebRX Online status
+* `binary_sensor.webrx_lan`   OpenWebRX Online status     
 The name of the Ping sensor depends on the name you gave in the ping integration.
 
 ## Note
-Under development.
+Still under development.
