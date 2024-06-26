@@ -60,6 +60,9 @@ The name of the Ping sensor depends on the name you gave in the ping integration
 The file `card.yaml` contains as a first example of an *entities card*, how the OpenWebRX status could be displayed. With *ADD CARD* select *MANUAL* and copy the yaml code to the card configuration.
 The second example is a *markdown card*. It will show the statistics of decoded FT-8, FT-4 and WSPR signals. Add the code after selecting the YAML editor of the markdown card.
 
+## Homeassistant Automations with OpenWebRX
+Once, the sensors are added and working, you can easily define alarms, when a certain call sign is decoded, when on a selected band activities show up *etc.*
+
 ## Example
 ![entities-card-example](/entities-card.png)
 ![markup-card-example](/markup-card.png)

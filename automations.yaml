@@ -1,0 +1,81 @@
+# Example for Alert when there is activity on 6m, a station in Antarctica or 
+# Africa was decoded.
+
+alias: "Alert: WebRX Activity Announcements"
+description: Alert when there is activity on 6 m, from Antarctica or Africa
+trigger:
+  - platform: template
+    value_template: >-
+      {{ (((state_attr('sensor.openwebrx_ft8','freq') /1000000) | int) == 50 )
+      and 
+         ((states('sensor.webrx_ft8_min_ago')| int) < 1) }}
+    id: Activity-6m
+  - platform: template
+    value_template: |-
+      {# Second letter of the locator field #}
+      {% set ltrs = ['A','B','C','D'] %}
+      {{ (state_attr('sensor.openwebrx_ft8','locator') | list)[1] in ltrs }}
+    id: Activity-Antarctica
+  - platform: template
+    value_template: |-
+      {# Only the first 2 letters #}
+      {% set field = (state_attr('sensor.openwebrx_ft8','locator') | list)[0] 
+      + (state_attr('sensor.openwebrx_ft8','locator') | list)[1] %}
+      {# Africa #} {% set af = 
+      ['JM','IL','JL','KL','ML','IK','JK','KK','LK',
+      'IJ','JJ','KJ','LJ','JI','KI','LI','JH','KH',
+      'JG','KG','JF','KF'] %}
+      {{ field in af }}
+    id: Activity-Africa
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - Activity-6m
+        sequence:
+          - service: notify.mobile_app_iphone12
+            data:
+              message: >
+                Notification: {{ states('sensor.webrx_ft8_callsign') }} decoded
+                on 6 m!"
+            enabled: true
+          - delay:
+              hours: 0
+              minutes: 13
+              seconds: 0
+              milliseconds: 0
+      - conditions:
+          - condition: trigger
+            id:
+              - Activity-Antarctica
+        sequence:
+          - service: notify.mobile_app_iphone12
+            data:
+              message: >
+                Antarctica station with call sign {{
+                states('sensor.webrx_ft8_callsign') }} 
+                at locator field {{ state_attr('sensor.openwebrx_ft8','locator')}} 
+                was decoded on {{(states('sensor.openwebrx_ft8')| int /1000) |
+                round(0)}} MHz.
+            enabled: true
+      - conditions:
+          - condition: trigger
+            id:
+              - Activity-Africa
+        sequence:
+          - service: notify.mobile_app_iphone12
+            data:
+              message: >
+                African station with call sign {{
+                states('sensor.webrx_ft8_callsign')}}  at locator field {{
+                state_attr('sensor.openwebrx_ft8','locator') }}  was decoded on
+                {{(states('sensor.openwebrx_ft8')| int /1000) | round(0)}} MHz.
+            enabled: true
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+mode: single
