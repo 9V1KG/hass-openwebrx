@@ -62,7 +62,7 @@ The second example is a *markdown card*. It will show the statistics of decoded 
 
 ## Example
 ![entities-card-example](/entities-card.png)
-![markup-card-example](/markuo-card.png)
+![markup-card-example](/markup-card.png)
 
 ## Note
 Still under development.
