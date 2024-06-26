@@ -1,52 +1,72 @@
-# Combination of 'vertical stack card', mushroom-template-card, 
-# conditional card and entities card.
-type: vertical-stack
-cards:
-  - type: custom:mushroom-template-card
-    primary: OpenWebRX+
-    secondary: '{{ state_attr( ''sensor.sdr_connected'', ''sdr'') }}'
-    icon: mdi:radio-tower
-    entity: |
-      sensor.sdr_connected binary_sensor.webrx_lan
-    icon_color: |
-      {% if is_state('binary_sensor.webrx_lan','on') -%}
-       [30,150,0]
-      {%- endif %}
-    tap_action:
-      action: call-service
-      service: input_boolean.toggle
-      target:
-        entity_id: input_boolean.webrx_details
-      data: {}
-  - type: conditional
-    conditions:
-      - condition: state
-        entity: input_boolean.webrx_details
-        state: 'on'
-    card:
-      type: entities
-      entities:
-        - entity: binary_sensor.webrx_lan
-          name: OpenWebRX
-          tap_action:
-            action: url
-            url_path: http://9v1kg.bpmsg.com:8073/
-        - entity: sensor.openwebrx_version
-        - entity: sensor.sdr_connected
-          name: Number of connected SDRs
-        - entity: sensor.openwebrx_users
-          name: Number of current users
-        - entity: sensor.webrx_rx_source
-          name: Last SDR switched
-        - entity: sensor.openwebrx_rx
-          name: Band selected
-        - entity: sensor.webrx_ft8_callsign
-          name: Last decoded call (FT8)
-        - entity: sensor.openwebrx_ft8
-          name: On frequency
-        - entity: sensor.webrx_ft8_min_ago
-          name: Time ago (hh:mm:ss)
-        - entity: input_boolean.webrx_reboot
-          name: OpenWebRX reboot
-      state_color: true
-      title: WebRX status
+# OpenWebRX entities card.
+# Paste Yaml code after selecting Manual card.
+type: entities
+entities:
+- entity: binary_sensor.webrx_lan
+  name: Online status
+  tap_action:
+    action: url
+    # change to your web url here
+    url_path: http://mywebsdr.com:8073/
+- entity: sensor.openwebrx_users
+  name: Number of current users
+  secondary_info: last-changed
+- entity: sensor.sdr_connected
+  type: attribute
+  attribute: sdr
+  name: Connected SDRs
+- entity: sensor.webrx_rx_source
+  name: Last SDR switched
+  secondary_info: last-changed
+- entity: sensor.openwebrx_rx
+  name: Last profile selected
+- type: divider
+- entity: sensor.webrx_ft8_callsign
+  name: Last decoded call (FT8)
+  secondary_info: last-changed
+- entity: sensor.openwebrx_ft8
+  type: attribute
+  attribute: locator
+  name: In locator field
+- entity: sensor.openwebrx_ft8
+  name: On frequency
+- entity: sensor.webrx_ft8_min_ago
+  name: Time elapsed (hh:mm:ss)
+state_color: true
+title: OpenWebRX+
+
+# Markdown card statistics
+# Statistics will be reset after OpenWebRX reboot
+# Paste code in YML editor, not visual editor.
+type: markdown
+content: >-
+  Decodes since last WebRX reboot:
+
+  {#- Replace with your ham radio band profiles as defined in  #}
+  {%- set profiles
+  =['6m','10m','12m','15m','17m','20m','30m','40m','80m','160m'] -%}
+  {% for band in profiles %}
+
+  {{band}}: {% if state_attr('sensor.openwebrx_users','wsjt')['decodes'][band]
+  is defined -%}
+  {% if state_attr('sensor.openwebrx_users','wsjt')['decodes'][band]['FT8'] is
+  defined -%}
+  FT8 **{{
+  state_attr('sensor.openwebrx_users','wsjt')['decodes'][band]['FT8']['count']}}**,
+  {% endif -%}
+  {% if state_attr('sensor.openwebrx_users','wsjt')['decodes'][band]['FT4'] is
+  defined -%}
+  FT4 **{{
+  state_attr('sensor.openwebrx_users','wsjt')['decodes'][band]['FT4']['count']}}**,
+  {% endif -%}
+  {% if state_attr('sensor.openwebrx_users','wsjt')['decodes'][band]['WSPR'] is
+  defined -%}
+  WSPR **{{
+  state_attr('sensor.openwebrx_users','wsjt')['decodes'][band]['WSPR']['count']}}**,
+  {% endif %}
+  {%- else %}none{%- endif %}
+  {%- endfor %}
+
+  PSK Reporter Spots: {{
+  state_attr('sensor.openwebrx_users','pskreporter')['spots']['count'] | int }}
+title: OpenWebRX+ Decodes
