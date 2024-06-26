@@ -12,7 +12,7 @@
       availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
 
 # webrx version (status)
-- resource: http://9v1kg.bpmsg.com:8073/status.json
+- resource: http://your_openwebrx_link:8073/status.json
   sensor:
     - name: "OpenWebRX_version  "
       value_template: "{{ value_json.version }}"
