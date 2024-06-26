@@ -58,7 +58,8 @@ You then need to reload the yaml configuration. Go to *Developer tools > YAML* a
 The name of the Ping sensor depends on the name you gave in the ping integration.
 
 ### Homeassistant entities card
-The file `card.yaml` contains an example, how the OpenWebRX status could be displayed. With *ADD CARD* select *MANUAL* and copy the yaml code to the card configuration.
+The file `card.yaml` contains as a first example of an *entities card*, how the OpenWebRX status could be displayed. With *ADD CARD* select *MANUAL* and copy the yaml code to the card configuration.
+The second example is a *markdown card*. It will show the statistics of decoded FT-8, FT-4 and WSPR signals. Add the code after selecting the YAML editor of the markdown card.
 
 ## Note
 Still under development.
