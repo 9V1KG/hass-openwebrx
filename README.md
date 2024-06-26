@@ -61,7 +61,8 @@ The file `card.yaml` contains as a first example of an *entities card*, how the 
 The second example is a *markdown card*. It will show the statistics of decoded FT-8, FT-4 and WSPR signals. Add the code after selecting the YAML editor of the markdown card.
 
 ## Example
-![entities-card-example](/entities.png)
+![entities-card-example](/entities-card.png)
+![markup-card-example](/markuo-card.png)
 
 ## Note
 Still under development.
