@@ -15,9 +15,10 @@ entities:
   type: attribute
   attribute: sdr
   name: Connected SDRs
-- entity: sensor.webrx_rx_source
+- entity: sensor.openwebrx_rx
+  type: attribute
+  attribute: source
   name: Last SDR switched
-  secondary_info: last-changed
 - entity: sensor.openwebrx_rx
   name: Last profile selected
 - type: divider

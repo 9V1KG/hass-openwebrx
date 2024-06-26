@@ -3,6 +3,7 @@
 # of the WebSDR.
 
 # Shows the last FT8 decoded callsign
+# Derived from sensor 'sensor.openwebrx_ft8'
 - sensor:
   - name: webrx-ft8-callsign
     state: >
@@ -11,6 +12,7 @@
     icon: mdi:radio
 
 # Time elapsed since last FT8 decode
+# Derived from sensor 'sensor.openwebrx_ft8'
 - sensor:
   - name: webrx-ft8-min_ago
     device_class: duration
@@ -21,17 +23,8 @@
     availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"     
     icon: mdi:clock
 
-# Shows the selected SDR of the last profile switch
-# TODO: delete, can be selected as attribute in entities card.
-- sensor:
-  - name: webrx-rx-source
-    state: >
-      {{ state_attr( 'sensor.openwebrx_rx', 'source') }}
-    availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
-    icon: mdi:radio
-
 # Shows the connected SDRs and types 
-#  derived from sensor 'sensor.openwebrx_version'
+# derived from sensor 'sensor.openwebrx_version'
 - sensor:
   - name: sdr_connected
     state: >
