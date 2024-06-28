@@ -60,8 +60,32 @@ The name of the Ping sensor depends on the name you gave in the ping integration
 The file `card.yaml` contains as a first example of an *entities card*, how the OpenWebRX status could be displayed. With *ADD CARD* select *MANUAL* and copy the yaml code to the card configuration.
 The second example is a *markdown card*. It will show the statistics of decoded FT-8, FT-4 and WSPR signals. Add the code after selecting the YAML editor of the markdown card.
 
-## Homeassistant Automations with OpenWebRX
-Once, the sensors are added and working, you can easily define alarms, when a certain call sign is decoded, when on a selected band activities show up *etc.*
+## Homeassistant Automations and Alarms with OpenWebRX
+Once, the sensors are added and working, you can easily define alarms, when a certain call sign is decoded, when on a selected band activities show up *etc.*  
+
+Use the combination of frequency `sensor.openwebrx_ft8` and elapsed time `sensor.webrx_ft8_min_ago` to trigger an alarm for band activities. Use the `locator` attribute of `sensor.openwebrx_ft8` to trigger
+an alarm, when a certain locator field (or list of locator fields) was detected.
+
+### Macros
+The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. In your automation/script use something like:
+```
+alias: Spell Test
+sequence:
+  - variables:
+      call_spelled: |
+        {% from 'macros.jinja' import spell %}
+        {{ spell(states('sensor.webrx_ft8_callsign')) }}
+  - service: tts.speak
+    target:
+      entity_id: tts.home_assistant_cloud
+    data:
+      cache: false
+      message: "{{call_spelled}}"
+      media_player_entity_id: media_player.living_room_2
+icon: mdi:radio-tower
+mode: single
+
+```
 
 ## Example
 ![entities-card-example](/entities-card.png)
