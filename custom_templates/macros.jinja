@@ -1,0 +1,19 @@
+{# Macro to spell words with the international phonetic alphabet #}
+{% macro spell(call) %}
+{% set alfa = {
+'a':'alpha','b':'bravo','c':'charlie',
+'d':'delta','e':'echo','f':'foxtrott',
+'g':'golf','h':'hotel','i':'india',
+'j':'juliett','k':'kilo','l':'lima',
+'m':'mike','n':'november','o':'oscar',
+'p':'papa','q':'quebec','r':'romeo',
+'s':'sierra','t':'tango','u':'uniform',
+'v':'victor','w':'whiskey','x':'x-ray',
+'y':'yankee','z':'zulu',
+'1': '1','2': '2','3': '3','4': '4',
+'5': '5','6': '6','7': '7','8': '8',
+'9': 'Niner','0': '0'} %}
+{% for l in call | lower | list  -%}
+{{ alfa[l]+' '}}
+{%- endfor %}
+{%- endmacro -%}
