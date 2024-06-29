@@ -14,6 +14,11 @@ rest: !include rest.yaml
 mqtt: !include mqtt.yaml
 template: !include templates.yaml
 ```
+
+### Macros
+
+Custom defined jinja macros are stored in the hass data sub-directory `custom_templates`.
+
 ### Homeassistant Ping (ICMP) integration
 
 To check the online status of your OpenWebRX, you also need to add the **Ping (ICMP)** Integration. 
@@ -92,4 +97,4 @@ mode: single
 ![markup-card-example](/markup-card.png)
 
 ## Note
-Still under development.
+Work in progress.
