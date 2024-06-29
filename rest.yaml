@@ -1,5 +1,5 @@
 # webrx user count
-- resource: http://9v1kg.bpmsg.com:8073/metrics.json
+- resource: http://your_webrx.com:8073/metrics.json
   sensor:
     - name: "OpenWebRX_users"
       value_template: "{{ value_json.openwebrx.users | int }}"
