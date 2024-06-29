@@ -9,7 +9,7 @@
     state: >
       {{ state_attr( 'sensor.openwebrx_ft8', 'callsign') }}
     availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
-    icon: mdi:radio
+    icon: mdi:view-headline
 
 # Time elapsed since last FT8 decode
 # Derived from sensor 'sensor.openwebrx_ft8'
@@ -18,7 +18,8 @@
     device_class: duration
     unit_of_measurement: "min"
     state: >
-      {% set te = (( as_timestamp(now()) - state_attr( 'sensor.openwebrx_ft8', 'timestamp')/1000 )/ 60) | round(1) %}
+      {% set te = (( as_timestamp(now()) 
+      - state_attr( 'sensor.openwebrx_ft8', 'timestamp')/1000 )/ 60) | round(1) %}
       {% if te is defined and te >= 0 %}{{ te }}{% else %}0{% endif %}
     availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"     
     icon: mdi:clock
@@ -30,7 +31,7 @@
     state: >
      {{ state_attr( 'sensor.openwebrx_version', 'sdrs') | count }}
     availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
-    icon: mdi:radio
+    icon: mdi:signal-variant
     attributes:
       sdr: >
         [{% for j in state_attr( 'sensor.openwebrx_version', 'sdrs') %}

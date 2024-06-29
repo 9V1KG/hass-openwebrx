@@ -16,7 +16,7 @@ sensor:
 # Attributes contain source (SDR), e.g. Airspy
   - name: "OpenWebRX-RX"
     state_topic: "openwebrx/RX"
-    icon: mdi:radio
+    icon: mdi:toggle-switch
     value_template: '{{ value_json.profile }}'
     json_attributes_topic: "openwebrx/RX"
     device:

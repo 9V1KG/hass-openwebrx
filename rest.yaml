@@ -1,5 +1,5 @@
 # webrx user count
-- resource: http://your_openwebrx_link:8073/metrics.json
+- resource: http://9v1kg.bpmsg.com:8073/metrics.json
   sensor:
     - name: "OpenWebRX_users"
       value_template: "{{ value_json.openwebrx.users | int }}"
@@ -8,7 +8,14 @@
         - wsprnet
         - decoding
         - wsjt
-      icon: mdi:account-multiple-outline
+      icon: >
+        {% if this.state == '0' %}
+          mdi:account-off
+        {% elif this.state == '1' %}
+          mdi:account
+        {% else %}
+          mdi:account-multiple
+        {% endif %}
       availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
 
 # webrx version (status)
@@ -20,6 +27,6 @@
         - receiver
         - max_clients
         - sdrs
-      icon: mdi:linux
+      icon: mdi:github-circle
       availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
 

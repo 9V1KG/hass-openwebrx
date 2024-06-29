@@ -66,10 +66,10 @@ The file `card.yaml` contains as a first example of an *entities card*, how the 
 The second example is a *markdown card*. It will show the statistics of decoded FT-8, FT-4 and WSPR signals. Add the code after selecting the YAML editor of the markdown card.
 
 ## Homeassistant Automations and Alarms with OpenWebRX
-Once, the sensors are added and working, you can easily define alarms, when a certain call sign is decoded, when on a selected band activities show up *etc.*  
+Once, the sensors are added and working, you can easily define alarms, when a certain call sign is decoded, when activities show up on a selected band *etc.*  
 
 Use the combination of frequency `sensor.openwebrx_ft8` and elapsed time `sensor.webrx_ft8_min_ago` to trigger an alarm for band activities. Use the `locator` attribute of `sensor.openwebrx_ft8` to trigger
-an alarm, when a certain locator field (or list of locator fields) was detected.
+an alarm, when a certain locator field (or list of locator fields) was detected. Two examples are given in `automation.yaml`.
 
 ### Macros
 The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. In your automation/script use something like:
