@@ -93,8 +93,8 @@ mode: single
 ```
 
 ## Example
-![entities-card-example](/entities-card.png)
-![markup-card-example](/markup-card.png)
+![entities-card-example](/assets/entities-card.png)
+![markup-card-example](/assets/markup-card.png)
 
 ## Note
 Work in progress.
