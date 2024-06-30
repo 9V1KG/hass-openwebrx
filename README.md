@@ -75,26 +75,9 @@ Three examples are given in `automation.yaml`. They are triggered by a template.
 * The second example gives and alarm, when an Antarctica station was decoded, based on the second letter of the locator. 
 * The third example gives an alarm, when a callsign outside singapore (`9V1`) was decoded on the 6 m band.
 
-### Macros
-The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. In your automation/script use something like:
-```
-alias: Spell Test
-sequence:
-  - variables:
-      call_spelled: |
-        {% from 'macros.jinja' import spell %}
-        {{ spell(states('sensor.webrx_ft8_callsign')) }}
-  - service: tts.speak
-    target:
-      entity_id: tts.home_assistant_cloud
-    data:
-      cache: false
-      message: "{{call_spelled}}"
-      media_player_entity_id: media_player.living_room_2
-icon: mdi:radio-tower
-mode: single
+### Macro to spell a call sign with the phonetic alphabet
+The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. In `scripts.yaml` you can find an example.
 
-```
 
 ## Example
 ![entities-card-example](/assets/entities-card.png)

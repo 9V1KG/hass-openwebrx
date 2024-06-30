@@ -1,0 +1,16 @@
+# Example script using the spell macro in macros.jinja
+alias: Spell Test
+sequence:
+  - variables:
+      call_spelled: |
+        {% from 'macros.jinja' import spell %}
+        {{ spell(states('sensor.webrx_ft8_callsign')) }}
+  - service: tts.speak
+    target:
+      entity_id: tts.home_assistant_cloud
+    data:
+      cache: false
+      message: "{{call_spelled}}"
+      media_player_entity_id: media_player.living_room_2
+icon: mdi:radio-tower
+mode: single
