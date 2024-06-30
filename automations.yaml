@@ -1,81 +1,133 @@
-# Example for Alert when there is activity on 6m, a station in Antarctica or 
-# Africa was decoded.
+# Automation examples for OpenWebRX. Alerts based on call sign (example 1)
+# Locator grid (example 2) and frequency (example 3). Change your tts service
+# using your actual target and media player.
 
-alias: "Alert: WebRX Activity Announcements"
-description: Alert when there is activity on 6 m, from Antarctica or Africa
+# Example 1 for an alert when a 9V1 (Singapore) Station is active (was decoded)
+alias: "Alert1: WebRX 9V1 station active"
+description: Alert when there is activity from 9V1 station
 trigger:
   - platform: template
-    value_template: >-
-      {{ (((state_attr('sensor.openwebrx_ft8','freq') /1000000) | int) == 50 )
-      and 
-         ((states('sensor.webrx_ft8_min_ago')| int) < 1) }}
-    id: Activity-6m
+    value_template: "{{(states('sensor.webrx_ft8_callsign')|truncate(3,true,'',0)) == '9V1'}}"
+    id: activity-9v1
+condition: []
+action:
+  - variables:
+      call_spelled: >
+        {% from 'macros.jinja' import spell %} {{
+        spell(states('sensor.webrx_ft8_callsign')) }}
+      loc_spelled: >
+        {% from 'macros.jinja' import spell %} {{
+        spell(state_attr('sensor.openwebrx_ft8','locator')[0] +
+        state_attr('sensor.openwebrx_ft8','locator')[1]) }}
+  - service: notify.mobile_app_iphone12
+    data:
+      message: >
+        Singapore station {{ states('sensor.webrx_ft8_callsign') }} active on {{
+        states('sensor.openwebrx_ft8') | int //1000 }} MHz.
+      title: OpenWebRX
+    enabled: true
+  - service: tts.speak
+    target:
+      entity_id: tts.home_assistant_cloud
+    data:
+      cache: true
+      message: >
+        Singapore station with call sign {{ call_spelled }}  active on {{
+        states('sensor.openwebrx_ft8') | int //1000 }} Megahertz.
+      media_player_entity_id: media_player.living_room_2
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+mode: single
+
+# Example 2: Activity from Antarctica
+alias: "Alert1: WebRX Antarctica active"
+description: Alert when there is activity from Antarctica
+trigger:
   - platform: template
     value_template: |-
       {# Second letter of the locator field #}
       {% set ltrs = ['A','B','C','D'] %}
       {{ (state_attr('sensor.openwebrx_ft8','locator') | list)[1] in ltrs }}
     id: Activity-Antarctica
-  - platform: template
-    value_template: |-
-      {# Only the first 2 letters #}
-      {% set field = (state_attr('sensor.openwebrx_ft8','locator') | list)[0] 
-      + (state_attr('sensor.openwebrx_ft8','locator') | list)[1] %}
-      {# Africa #} {% set af = 
-      ['JM','IL','JL','KL','ML','IK','JK','KK','LK',
-      'IJ','JJ','KJ','LJ','JI','KI','LI','JH','KH',
-      'JG','KG','JF','KF'] %}
-      {{ field in af }}
-    id: Activity-Africa
 condition: []
 action:
-  - choose:
-      - conditions:
-          - condition: trigger
-            id:
-              - Activity-6m
-        sequence:
-          - service: notify.mobile_app_iphone12
-            data:
-              message: >
-                Notification: {{ states('sensor.webrx_ft8_callsign') }} decoded
-                on 6 m!"
-            enabled: true
-          - delay:
-              hours: 0
-              minutes: 13
-              seconds: 0
-              milliseconds: 0
-      - conditions:
-          - condition: trigger
-            id:
-              - Activity-Antarctica
-        sequence:
-          - service: notify.mobile_app_iphone12
-            data:
-              message: >
-                Antarctica station with call sign {{
-                states('sensor.webrx_ft8_callsign') }} 
-                at locator field {{ state_attr('sensor.openwebrx_ft8','locator')}} 
-                was decoded on {{(states('sensor.openwebrx_ft8')| int /1000) |
-                round(0)}} MHz.
-            enabled: true
-      - conditions:
-          - condition: trigger
-            id:
-              - Activity-Africa
-        sequence:
-          - service: notify.mobile_app_iphone12
-            data:
-              message: >
-                African station with call sign {{
-                states('sensor.webrx_ft8_callsign')}}  at locator field {{
-                state_attr('sensor.openwebrx_ft8','locator') }}  was decoded on
-                {{(states('sensor.openwebrx_ft8')| int /1000) | round(0)}} MHz.
-            enabled: true
+  - variables:
+      call_spelled: >
+        {% from 'macros.jinja' import spell %} {{
+        spell(states('sensor.webrx_ft8_callsign')) }}
+      loc_spelled: >
+        {% from 'macros.jinja' import spell %} {{
+        spell(state_attr('sensor.openwebrx_ft8','locator')[0] +
+        state_attr('sensor.openwebrx_ft8','locator')[1]) }}
+  - service: notify.mobile_app_iphone12
+    data:
+      message: >
+        Antarctica station with call sign {{ states('sensor.webrx_ft8_callsign')
+        }}  at locator field {{ state_attr('sensor.openwebrx_ft8','locator') }} 
+        was decoded on {{(states('sensor.openwebrx_ft8')| int //1000) }} MHz.
+      title: OpenWebRX
+    enabled: true
+  - service: tts.speak
+    target:
+      entity_id: tts.home_assistant_cloud
+    data:
+      cache: true
+      message: >
+        Antarctica station with call sign {{ call_spelled }} at locator field {{
+        loc_spelled }} was decoded on {{(states('sensor.openwebrx_ft8')| int
+        //1000)}} Megahertz.
+      media_player_entity_id: media_player.living_room_2
   - delay:
       hours: 0
-      minutes: 2
+      minutes: 5
       seconds: 0
       milliseconds: 0
+    enabled: true
+mode: single
+
+# Example 3: Activity on 6 m band, not 9V1 station
+alias: "Alert1: WebRX activity 6 m"
+description: Alert when there is FT-8 activity on 6 m from a non 9V1 station
+trigger:
+  - platform: template
+    value_template: >-
+      {# Activity on 6 m but not a 9V1 station #} 
+      {{
+         ((state_attr('sensor.openwebrx_ft8','freq') //1000000) == 50 ) and 
+         ((states('sensor.webrx_ft8_min_ago') | int) < 1) and
+         ((states('sensor.webrx_ft8_callsign')| truncate(3,true,'',0)) != '9V1') 
+      }}
+    id: Activity-6m
+condition: []
+action:
+  - variables:
+      call_spelled: >
+        {% from 'macros.jinja' import spell %} {{
+        spell(states('sensor.webrx_ft8_callsign')) }}
+      loc_spelled: >
+        {% from 'macros.jinja' import spell %} {{
+        spell(state_attr('sensor.openwebrx_ft8','locator')[0] +
+        state_attr('sensor.openwebrx_ft8','locator')[1]) }}
+  - service: notify.mobile_app_iphone12
+    data:
+      message: |
+        Notification: 
+        {{ states('sensor.webrx_ft8_callsign') }} 
+        at locator {{ loc_spelled }} decoded on 6 m!"
+      title: OpenWebRX
+    enabled: true
+  - service: script.send_play_announcement
+    data:
+      message: >
+        The six meter band seems open, the station {{ call_spelled }} 
+        at locator field {{ loc_spelled }} was decoded just now!
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+    enabled: true
 mode: single
