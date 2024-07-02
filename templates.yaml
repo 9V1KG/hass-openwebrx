@@ -24,6 +24,20 @@
     availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"     
     icon: mdi:clock
 
+# Binary sensor for FT-8 signals decoded over the last 60 min
+- binary_sensor:
+  - name: webrx-ft8-decode
+    state: >
+      {{ (states('sensor.openwebrx_ft8')  != 'unknown') and
+         (states('sensor.webrx_ft8_min_ago') | int < 60 ) }}
+    availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
+    icon: >
+      {% if this.state %}
+        mdi:checkbox-marked-circle-outline
+      {% else %}
+        mdi:checkbox-blank-circle-outline
+      {% endif %}
+
 # Shows the connected SDRs and types 
 # derived from sensor 'sensor.openwebrx_version'
 - sensor:
