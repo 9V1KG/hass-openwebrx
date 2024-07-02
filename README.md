@@ -77,7 +77,9 @@ Examples are given in `automation.yaml`. They are triggered by a template.
 * The third example gives an alarm, when a callsign outside singapore (`9V1`) was decoded on the 6 m band.
 
 ### Alarm for a list of specific call signs
-Define a **Text** helper under *Settings -> Devices and Services -> Helpers*. Give it the name `call-sign-list`. You can use the entities card to display the list. Input the call signs, you want to receive an alarm from, in the text field, separated by comma. The automation `Alert: WebRX callsign list`will send a notification, once a call sign from the list was decoded.
+Define a **Text** helper under *Settings -> Devices and Services -> Helpers*. Give it the name `call-sign-list`. You can use the entities card to display the list.  
+![entities-card-example](/assets/callsign-list.png)  
+Input the call signs, you want to receive an alarm from, in the text field, separated by comma. The automation `Alert: WebRX callsign list`will send a notification, once a call sign from the list was decoded.
 
 ### Macro to spell a call sign with the phonetic alphabet
 The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. In `scripts.yaml` you can find an example.
