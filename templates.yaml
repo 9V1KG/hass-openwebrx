@@ -3,7 +3,7 @@
 # of the WebSDR.
 
 # Shows the last FT8 decoded callsign
-# Derived from sensor 'sensor.openwebrx_ft8'
+# Derived from mqtt sensor 'sensor.openwebrx_ft8'
 - sensor:
   - name: webrx-ft8-callsign
     state: >
@@ -12,7 +12,7 @@
     icon: mdi:view-headline
 
 # Time elapsed since last FT8 decode
-# Derived from sensor 'sensor.openwebrx_ft8'
+# Derived from sensor mqtt sensor 'sensor.openwebrx_ft8'
 - sensor:
   - name: webrx-ft8-min_ago
     device_class: duration
@@ -25,6 +25,8 @@
     icon: mdi:clock
 
 # Binary sensor for FT-8 signals decoded over the last 60 min
+# uses mqtt sensor 'sensor.openwebrx_ft8' and template sensor
+# 'sensor.webrx_ft8_min_ago'
 - binary_sensor:
   - name: webrx-ft8-decode
     state: >
@@ -39,7 +41,7 @@
       {% endif %}
 
 # Shows the connected SDRs and types 
-# derived from sensor 'sensor.openwebrx_version'
+# derived from rest sensor 'sensor.openwebrx_version'
 - sensor:
   - name: sdr_connected
     state: >

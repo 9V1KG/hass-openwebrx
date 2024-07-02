@@ -54,9 +54,9 @@ You then need to reload the yaml configuration. Go to *Developer tools > YAML* a
 * `sensor.openwebrx_users`   Number of connected users.
 * `sensor.openwebrx_version` Version of the OpenWebRX+ software.
 #### Template sensors
-* `binary_sensor.webrx_ft8_decode` State `On`, when a FT-8 signal was decoded within the last hour
 * `sensor.webrx_ft8_callsign` Latest FT-8 call sign decoded, derived from `sensor.openwebrx_ft8`
 * `sensor.webrx_ft8_min_ago`  Time since last FT-8 decode in minutes, derived from `sensor.openwebrx_ft8`
+* `binary_sensor.webrx_ft8_decode` State `On`, when a FT-8 signal was decoded within the last hour
 * `sensor.sdr_connected`      List of connected SDRs, derived from `sensor.openwebrx_version`
 #### Ping (ICMP) sensors
 * `binary_sensor.webrx_lan`   OpenWebRX Online status     

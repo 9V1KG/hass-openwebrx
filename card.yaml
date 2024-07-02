@@ -1,49 +1,63 @@
 # OpenWebRX entities card.
 # Change the url_path to your webrx path and
 # paste the Yaml code after selecting Manual card.
-type: entities
-entities:
-  - type: section
-    label: Status
-  - entity: binary_sensor.webrx_lan
-    name: OpenWebRX+
-    tap_action:
-      action: url
-      url_path: http://9v1kg.bpmsg.com:8073/
-  - entity: sensor.openwebrx_version
-    name: Software version
-  - type: section
-    label: General
-  - entity: sensor.openwebrx_users
-    name: Number of current users
-    secondary_info: last-changed
-  - entity: sensor.sdr_connected
-    type: attribute
-    attribute: sdr
-    name: Connected SDRs
-  - entity: sensor.openwebrx_rx
-    type: attribute
-    attribute: source
-    name: Last SDR switched
-    secondary_info: last-changed
-  - entity: sensor.openwebrx_rx
-    name: Band selected
-  - type: section
-    label: FT8 decoding
-  - entity: sensor.webrx_ft8_callsign
-    name: Last decoded call (FT8)
-    secondary_info: last-changed
-  - entity: sensor.openwebrx_ft8
-    type: attribute
-    attribute: locator
-    name: In locator field
-    icon: mdi:grid
-  - entity: sensor.openwebrx_ft8
-    name: On frequency
-  - entity: sensor.webrx_ft8_min_ago
-    name: Time elapsed (hh:mm:ss)
-title: OpenWebRX+
-state_color: true
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - type: section
+        label: Status
+      - entity: binary_sensor.webrx_lan
+        name: Online status
+        tap_action:
+          action: url
+          url_path: http://9v1kg.bpmsg.com:8073/
+      - entity: sensor.openwebrx_users
+        name: Number of current users
+        secondary_info: last-changed
+      - type: section
+        label: General information
+      - entity: sensor.openwebrx_version
+        name: Software version
+      - entity: sensor.sdr_connected
+        type: attribute
+        attribute: sdr
+        name: Connected SDRs
+      - entity: sensor.openwebrx_rx
+        type: attribute
+        attribute: source
+        name: Last SDR switched
+        secondary_info: last-changed
+      - entity: sensor.openwebrx_rx
+        name: Last profile selected
+    state_color: true
+    title: OpenWebRX+
+    show_header_toggle: false
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.webrx_ft8_decode
+        state: 'on'
+      - condition: numeric_state
+        entity: sensor.webrx_ft8_min_ago
+        below: 2
+    card:
+      type: entities
+      entities:
+        - type: section
+          label: FT8 decoding
+        - entity: sensor.webrx_ft8_callsign
+          name: Last decoded call (FT8)
+          secondary_info: last-changed
+        - entity: sensor.openwebrx_ft8
+          type: attribute
+          attribute: locator
+          name: In locator field
+          icon: mdi:grid
+        - entity: sensor.openwebrx_ft8
+          name: On frequency
+        - entity: sensor.webrx_ft8_min_ago
+          name: Time elapsed (hh:mm:ss)
+      state_color: true
 
 # Markdown card statistics
 # Statistics will be reset after OpenWebRX reboot
