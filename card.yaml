@@ -11,7 +11,7 @@ cards:
         name: Online status
         tap_action:
           action: url
-          url_path: http://9v1kg.bpmsg.com:8073/
+          url_path: http://openwebsdr.my:8073/
       - entity: sensor.openwebrx_users
         name: Number of current users
         secondary_info: last-changed
