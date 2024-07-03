@@ -77,16 +77,16 @@ The example in `automation.yaml` gives an alarm, when a call sign starting with 
 The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. You need to copy this file into your hass data directory under the same subdirectory `custom_templates`.
 
 ## Blueprints
-Some example automations above are available as blueprints. You can add them via the configuration file `configuration.yaml ` or by importing them using the Home assistant UI.
+Some example automations are available as blueprints. You can add them via the configuration file `configuration.yaml ` or by importing them using the Home assistant UI.
 ### Alarm for a list of specific call signs
 Define a **Text** helper under *Settings -> Devices and Services -> Helpers*. Give it the name `call-sign-list`. You can use the entities card to display the list.  
 ![entities-card-example](/assets/callsign-list.png)  
 Input the call signs, you want to receive an alarm from, in the text field, separated by comma. The automation blueprint `callsign-list.yaml` in `/blueprints/automations` will send a notification and annouce a message, once a call sign from the call sign list was decoded.
 ### Alarm for activity on the 6m band
-The blueprint `webrx-6m-alert.yaml` sends a notification, when any call sign on the 6 m band was decoded.
+The blueprint `webrx-6m-alert.yaml` sends a notification and makes an annoucement, when any call sign on the 6 m band was decoded.
 
 ### Alarm for activity from a station in Antarctica
-The blueprint 1webrx-antarctica-alert.yaml sends a notification, when a call sign in Antarctica was decoded, based on the second letter in the locator field.
+The blueprint 1webrx-antarctica-alert.yaml sends a notification and makes an annoucement, when a call sign in Antarctica was decoded, based on the second letter in the locator field.
 
 ## Example
 ![entities-card-example](/assets/entities-card.png)
