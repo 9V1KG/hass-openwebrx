@@ -1,0 +1,97 @@
+blueprint:
+  name: WebRX-callsign-alert
+  description: Notification and spoken anouncement, when a specific call sign from the call sign list was decoded.
+  domain: automation
+
+  input:
+    webrx_ft8:
+      name: webrx-ft8
+      description: "Select the WebRX MQTT sensor OpenWebRX-FT8"
+      selector:
+        entity:
+          filter:
+            - domain: sensor  
+
+    callsign_list:
+      name: call-sign-list
+      description: "Select the text field helper 'call-sign-list' containing the call signs, separated by comma."
+      selector:
+        entity:
+          filter:
+            - domain: input_text
+
+    tts-entity:
+      name: tts-entity
+      description: Select the available text-to-speech entity like 'tts.home_assistant_cloud'
+      selector:
+        entity:
+          filter:
+            - domain: tts  
+
+    media-play:
+      name: media-player
+      description: Select your available media player
+      selector:
+        entity:
+          filter:
+            - domain: media_player
+
+# We need these global variables to use them in templates
+
+variables:
+  act_ft8:  !input webrx_ft8
+
+trigger_variables:
+  tvar_callsign_list: !input callsign_list
+  tvar_webrx_ft8: !input webrx_ft8
+
+trigger:
+  - platform: template
+    value_template: |-
+      {% set calls = (states(tvar_callsign_list)).split(',') %}
+      {{ state_attr( tvar_webrx_ft8,'callsign') | upper in calls | trim }}
+    id: in-callsign-list
+
+action:
+  - variables:
+      call_spelled: |
+        {% from 'macros.jinja' import spell %}
+        {{ spell(state_attr(act_ft8, 'callsign')) }}
+      loc_spelled: |
+        {% from 'macros.jinja' import spell %}
+        {{ spell( (state_attr(act_ft8, 'locator'))[0] +
+                  (state_attr(act_ft8, 'locator'))[0]   
+                ) }}   
+      freq: |
+        {{ states(act_ft8) | int // 1000 }}
+      msg_data: |
+        The amateur radio station with the call sign {{ call_spelled }}, 
+        in locator field {{ loc_spelled }},
+        is active on {{ freq }} Mega Hertz.
+
+    # Notification 
+  - service: notify.notify
+    data:
+      message: >
+        Station from call sign list {{ state_attr( act_ft8, 'callsign') 
+        }} is active on {{ states(act_ft8) | int //1000 }} MHz!
+      title: OpenWebRX
+    enabled: true
+
+    # Anouncement
+  - service: tts.speak
+    target:
+      entity_id: !input tts-entity
+    data:
+      cache: true
+      message: >
+        {{ msg_data }}
+      media_player_entity_id: !input media-play
+
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+
+mode: single
