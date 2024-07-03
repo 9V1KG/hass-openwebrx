@@ -71,10 +71,7 @@ Once, the sensors are added and working, you can easily define alarms, when a ce
 
 Use the combination of frequency `sensor.openwebrx_ft8` and elapsed time `sensor.webrx_ft8_min_ago` to trigger an alarm for band activities. Use the `locator` attribute of `sensor.openwebrx_ft8` to trigger
 an alarm, when a certain locator field (or list of locator fields) was detected.   
-Examples are given in `automation.yaml`. They are triggered by a template. 
-* The first examples gives an alarm, when a call sign starting with `9V1` was decoded with FT-8.
-* The second example gives and alarm, when an Antarctica station was decoded, based on the second letter of the locator. 
-* The third example gives an alarm, when a callsign outside singapore (`9V1`) was decoded on the 6 m band.
+The example in `automation.yaml` gives an alarm, when a call sign starting with `9V1` was decoded with FT-8.
 
 ## Blueprints
 Some of the automations above are available as blueprints. You can add them via the configuration file `configuration.yaml ` or by importing them using the UI.
@@ -82,6 +79,9 @@ Some of the automations above are available as blueprints. You can add them via 
 Define a **Text** helper under *Settings -> Devices and Services -> Helpers*. Give it the name `call-sign-list`. You can use the entities card to display the list.  
 ![entities-card-example](/assets/callsign-list.png)  
 Input the call signs, you want to receive an alarm from, in the text field, separated by comma. The automation blueprint `callsign-list.yaml` in `/blueprints/automations` will send a notification and annouce a message, once a call sign from the call sign list was decoded.
+### Alarm for activity on the 6m band
+The blueprint `webrx-6m-alert.yaml` sends a notification, when any call sign on the 6 m band was decoded.  
+The blueprint 1webrx-antarctica-alert.yaml sends a notification, when a call sign in Antarctica was decoded, based on the second letter in the locator field.
 
 ### Macro to spell a call sign with the phonetic alphabet
 The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. In `scripts.yaml` you can find an example.
