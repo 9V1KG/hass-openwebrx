@@ -88,7 +88,7 @@ Input the call signs, you want to receive an alarm from, in the text field, sepa
 The blueprint `webrx-6m-alert.yaml` sends a notification and makes an annoucement, when any call sign on the 6 m band was decoded.
 
 ### Alarm for activity from a station in Antarctica
-The blueprint 1webrx-antarctica-alert.yaml sends a notification and makes an annoucement, when a call sign in Antarctica was decoded, based on the second letter in the locator field.
+The blueprint `webrx-antarctica-alert.yaml` sends a notification and makes an annoucement, when a call sign in Antarctica was decoded, based on the second letter in the locator field.
 
 ## Example
 ![entities-card-example](/assets/entities-card.png)
