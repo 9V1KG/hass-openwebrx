@@ -37,9 +37,6 @@ cards:
     conditions:
       - entity: binary_sensor.webrx_ft8_decode
         state: 'on'
-      - condition: numeric_state
-        entity: sensor.webrx_ft8_min_ago
-        below: 2
     card:
       type: entities
       entities:

@@ -20,11 +20,12 @@ action:
         {% from 'macros.jinja' import spell %} {{ spell(call) }}
       loc_spelled: |
         {% from 'macros.jinja' import spell %} {{ spell(loc[0] + loc[1]) }}
+      freq: |
+        {{ states('sensor.openwebrx_ft8') | int //1000 }}
   - service: notify.notiy
     data:
       message: >
-        Singapore station {{ call }} active on {{ states('sensor.openwebrx_ft8')
-        | int //1000 }} MHz.
+        Singapore station {{ call }} active on {{ freq }} MHz.
       title: OpenWebRX
     enabled: true
   - service: tts.speak
@@ -33,8 +34,8 @@ action:
     data:
       cache: true
       message: >
-        Singapore station with the call sign {{ call_spelled }} is active on {{
-        states('sensor.openwebrx_ft8') | int //1000 }} Megahertz.
+        Singapore station with the call sign {{ call_spelled }} 
+        is active on {{ freq }} Megahertz.
     enabled: true
   - delay:
       hours: 0
@@ -63,17 +64,19 @@ action:
   - variables:
       call_spelled: >
         {% from 'macros.jinja' import spell %} {{
-        spell(states('sensor.webrx_ft8_callsign')) }}
+        spell(state_attr('sensor.webrx_ft8,_'callsign')) }}
       loc_spelled: >
         {% from 'macros.jinja' import spell %} {{
         spell(state_attr('sensor.openwebrx_ft8','locator')[0] +
         state_attr('sensor.openwebrx_ft8','locator')[1]) }}
+      freq: >
+        {{(states('sensor.openwebrx_ft8')| int //1000) }}
   - service: notify.notify
     data:
       message: >
         Antarctica station with call sign {{ states('sensor.webrx_ft8_callsign')
         }}  at locator field {{ state_attr('sensor.openwebrx_ft8','locator') }} 
-        was decoded on {{(states('sensor.openwebrx_ft8')| int //1000) }} MHz.
+        was decoded on {{ freq }} MHz.
       title: OpenWebRX
     enabled: true
   - service: tts.speak
@@ -83,8 +86,7 @@ action:
       cache: true
       message: >
         Antarctica station with call sign {{ call_spelled }} at locator field {{
-        loc_spelled }} was decoded on {{(states('sensor.openwebrx_ft8')| int
-        //1000)}} Megahertz.
+        loc_spelled }} was decoded on {{ freq }} Megahertz.
       media_player_entity_id: media_player.living_room_2
   - delay:
       hours: 0
@@ -94,7 +96,7 @@ action:
     enabled: true
 mode: single
 
-# Example 3: Activity on 6 m band, not 9V1 station
+# Example 3: Activity on 6 m band, exept 9V1 stations
 alias: "Alert1: WebRX activity 6 m"
 description: Alert when there is FT-8 activity on 6 m from a non 9V1 station
 trigger:
@@ -145,8 +147,9 @@ mode: single
 # Example 4: Activity by a specific call sign, which is in a variable call sign list.
 # Requires Helper 'input_text.call_sign_list', macro 'spell',Text to Speech entity 
 # ('tts.home_assistant_cloud') and media player entity ('media_player.living_room_2')
+
 alias: "Alert: WebRX callsign list"
-description: Alert when there is activity from 9V1 station
+description: Alert when there is activity from a station in the call sign list
 trigger:
   - platform: template
     value_template: |-
@@ -163,11 +166,13 @@ action:
         {% from 'macros.jinja' import spell %} {{
         spell(state_attr('sensor.openwebrx_ft8','locator')[0] +
         state_attr('sensor.openwebrx_ft8','locator')[1]) }}
+      freq: >
+        {{ states('sensor.openwebrx_ft8') | int //1000 }}
   - service: notify.notify
     data:
       message: >
-        Station from call sign list {{ states('sensor.webrx_ft8_callsign') }} 
-        is active on {{ states('sensor.openwebrx_ft8') | int //1000 }} MHz.
+        Station from call sign list {{ state_attr('sensor.webrx_ft8',_'callsign') }} 
+        is active on {{ freq }} MHz.
       title: OpenWebRX
     enabled: true
   - service: tts.speak
@@ -176,8 +181,8 @@ action:
     data:
       cache: true
       message: >
-        Station from the call sign list, {{ call_spelled }} is active on {{
-        states('sensor.openwebrx_ft8') | int //1000 }} Megahertz.        
+        Station from the call sign list, {{ call_spelled }} 
+        is active on {{ freq }} Megahertz.        
       media_player_entity_id: media_player.living_room_2
     enabled: true
   - delay:
