@@ -1,7 +1,9 @@
 # hass-openwebrx
 Integration of [OpenWebRX+](https://github.com/luarvique/ppa) under Homeassistant (hass).
 Adding sensors (mqtt, rest and template sensors) into the homeassistant configuration 
-in order to display the OpenWebRX+ status on an entity card.
+in order to display the OpenWebRX+ status on an entity card, and to trigger automations, when 
+specific call signs, or stations in specific locator grids or on specific frequency bands 
+were decoded.
 
 ## Prerequisites
 
