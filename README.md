@@ -81,7 +81,7 @@ Some of the automations above are available as blueprints. You can add them via 
 ### Alarm for a list of specific call signs
 Define a **Text** helper under *Settings -> Devices and Services -> Helpers*. Give it the name `call-sign-list`. You can use the entities card to display the list.  
 ![entities-card-example](/assets/callsign-list.png)  
-Input the call signs, you want to receive an alarm from, in the text field, separated by comma. The automation blueprint `callsign-list.yaml in `/blueprints/automations` will send a notification and annouce a message, once a call sign from the call sign list was decoded.
+Input the call signs, you want to receive an alarm from, in the text field, separated by comma. The automation blueprint `callsign-list.yaml` in `/blueprints/automations` will send a notification and annouce a message, once a call sign from the call sign list was decoded.
 
 ### Macro to spell a call sign with the phonetic alphabet
 The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. In `scripts.yaml` you can find an example.
