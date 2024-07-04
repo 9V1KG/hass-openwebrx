@@ -6,11 +6,11 @@ blueprint:
   input:
     webrx_ft8:
       name: webrx-ft8
-      description: "Select the WebRX MQTT sensor OpenWebRX-FT8"
+      description: "Select the WebRX MQTT sensor for FT8, should be 'OpenWebRX-FT8'"
       selector:
         entity:
           filter:
-            - domain: sensor  
+            - domain: sensor
 
     notify_service:
       name: Notify service name
@@ -19,13 +19,22 @@ blueprint:
         text: {}
       default: notify.notify
 
+    speak_on:
+      name: Spoken Announcement
+      description: Switch on, when you want a spoken announcement beside the notification. Requires Blueprint 'webrx-announce.yaml'.
+      selector:
+        boolean:
+
 # We need these global variables to use them in templates
 
 variables:
   act_ft8:  !input webrx_ft8
+  act_speak_on: !input speak_on
 
 trigger_variables:
   tvar_webrx_ft8: !input webrx_ft8
+
+# Only this trigger template needs to be changed for other blueprints
 
 trigger:
   - platform: template
@@ -37,7 +46,6 @@ trigger:
          (state_attr(tvar_webrx_ft8,'timestamp')|int)/1000))) < 60) and
          ((state_var(tvar_webrx_ft8, 'callsign')| truncate(3,true,'',0)) != '9V1') 
       }}
-    id: Activity-6m
 
 action:
 
@@ -63,18 +71,27 @@ action:
          freq }} MHz!
       title: OpenWebRX
     enabled: true
-
+    
     # Anouncement: requires script blueprint webrx_announce
-  - service: script.webrx_announce
-    data:
-      message: |-
-        The Station with callsign {{ call_spelled 
-        }}, in locator grid {{ loc_spelled 
-        }}, is active on {{ freq }} MHz!
+  - if:
+    - condition: template
+      value_template: >
+        {{ (states('script.webrx_announce') == 'unknown') and act_speak_on }}
+    then:
+    - stop: "No announcement or blueprint missing "
+
+    else:
+    - service: script.webrx_announce
+      data:
+        message: |-
+          The Station with callsign, {{ call_spelled 
+          }}, in locator grid, {{ loc_spelled 
+          }}, is active on {{ freq }} MHz!
+      enabled: act_speak_on
 
   - delay:
       hours: 0
-      minutes: 1
+      minutes: 5
       seconds: 0
       milliseconds: 0
 
