@@ -67,7 +67,7 @@ action:
       message: >
         Antarctica station {{ state_attr( act_ft8, 'callsign') 
         }} in {{ state_attr( act_ft8, 'locator') }} is active on {{
-         states(act_ft8) | int //1000 }} MHz!
+         freq }} MHz!
       title: OpenWebRX
     enabled: true
     
@@ -84,9 +84,9 @@ action:
     - service: script.webrx_announce
       data:
         message: |-
-          Ham radio station from Antarctica with the callsign {{ call_spelled 
+          Antarctica station with the callsign {{ call_spelled 
           }}, in locator grid {{ loc_spelled 
-          }}, was decoded on {{ freq }} MHz!
+          }}, is active on {{ freq }} MHz!
       enabled: act_speak_on
       
   - delay:

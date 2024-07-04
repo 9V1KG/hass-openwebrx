@@ -69,7 +69,7 @@ action:
     data:
       message: >
         Station from call sign list {{ state_attr( act_ft8, 'callsign') 
-        }} is active on {{ states(act_ft8) | int //1000 }} MHz!
+        }} is active on {{ freq }} MHz!
       title: OpenWebRX
     enabled: true
 
@@ -85,7 +85,7 @@ action:
     - service: script.webrx_announce
       data:
         message: |-
-          The Station from your call sign list, with the callsign {{ call_spelled 
+          The Station from your call sign list, {{ call_spelled 
           }}, in locator grid {{ loc_spelled 
           }}, is active on {{ freq }} MHz!
       enabled: act_speak_on
