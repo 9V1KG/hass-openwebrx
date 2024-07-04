@@ -19,13 +19,23 @@ blueprint:
         text: {}
       default: notify.notify
 
+    speak_on:
+      name: Spoken Announcement
+      description: Switch on, when you want a spoken announcement beside the notification. Requires Blueprint 'webrx-announce.yaml'.
+      selector:
+        boolean:
+      default: true
+      
 # We need these global variables to use them in templates
 
 variables:
   act_ft8:  !input webrx_ft8
-
+  act_speak_on: !input speak_on
+  
 trigger_variables:
   tvar_webrx_ft8: !input webrx_ft8
+
+# Only this trigger template needs to be changed for other blueprints
 
 trigger:
   - platform: template
@@ -46,7 +56,7 @@ action:
       loc_spelled: |
         {% from 'macros.jinja' import spell %}
         {{ spell( (state_attr(act_ft8, 'locator'))[0] +
-                  (state_attr(act_ft8, 'locator'))[0]   
+                  (state_attr(act_ft8, 'locator'))[1]   
                 ) }}   
       freq: |
         {{ states(act_ft8) | int // 1000 }}
@@ -59,19 +69,31 @@ action:
         }} in {{ state_attr( act_ft8, 'locator') }} is active on {{
          states(act_ft8) | int //1000 }} MHz!
       title: OpenWebRX
-
+    enabled: true
+    
     # Anouncement: requires script blueprint webrx_announce
-  - service: script.webrx_announce
-    data:
-      message: |-
-        Ham radio station from Antarctica with the callsign {{ call_spelled 
-        }}, in locator grid {{ loc_spelled 
-        }}, was decoded on {{ freq }} MHz!
 
+  - if:
+    - condition: template
+      value_template: >
+        {{ (states('script.webrx_announce') == 'unknown') and act_speak_on }}
+    then:
+    - stop: "No announcement or blueprint missing "
+
+    else:
+    - service: script.webrx_announce
+      data:
+        message: |-
+          Ham radio station from Antarctica with the callsign {{ call_spelled 
+          }}, in locator grid {{ loc_spelled 
+          }}, was decoded on {{ freq }} MHz!
+      enabled: act_speak_on
+      
   - delay:
       hours: 0
-      minutes: 1
+      minutes: 5
       seconds: 0
       milliseconds: 0
 
 mode: single
+

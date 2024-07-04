@@ -6,7 +6,7 @@ blueprint:
   input:
     webrx_ft8:
       name: webrx-ft8
-      description: "Select the WebRX MQTT sensor for FT8, should be 'OpenWebRX-FT8'"
+      description: "Select the WebRX MQTT sensor OpenWebRX-FT8"
       selector:
         entity:
           filter:
@@ -24,6 +24,7 @@ blueprint:
       description: Switch on, when you want a spoken announcement beside the notification. Requires Blueprint 'webrx-announce.yaml'.
       selector:
         boolean:
+      default: true
 
 # We need these global variables to use them in templates
 
@@ -85,7 +86,7 @@ action:
       data:
         message: |-
           The Station with callsign, {{ call_spelled 
-          }}, in locator grid, {{ loc_spelled 
+          }}, in grid {{ loc_spelled 
           }}, is active on {{ freq }} MHz!
       enabled: act_speak_on
 
@@ -96,3 +97,4 @@ action:
       milliseconds: 0
 
 mode: single
+
