@@ -1,0 +1,40 @@
+blueprint:
+  name: WebRX-announce
+  description: Spoken anouncements of WebRX alarms using TTS
+  domain: script
+  input:
+
+    tts-entity:
+      name: tts-entity
+      description: Select available tts entity like 'tts.home_assistant_cloud'
+      selector:
+        entity:
+          filter:
+            - domain: tts  
+
+    media-play:
+      name: media-player
+      description: Select your available media player
+      selector:
+        entity:
+          filter:
+            - domain: media_player
+
+
+alias: WebRX Announcement
+
+variables:
+  message: {}
+
+sequence:
+  - service: tts.speak
+    target:
+      entity_id: !input tts-entity
+    data:
+      cache: true
+      message: >
+       {{message}}     
+      media_player_entity_id: !input media-play
+
+icon: mdi:account-voice
+mode: single

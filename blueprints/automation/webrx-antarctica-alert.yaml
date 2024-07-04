@@ -11,21 +11,13 @@ blueprint:
         entity:
           filter:
             - domain: sensor  
-    tts-entity:
-      name: tts-entity
-      description: Select the available text-to-speech entity like 'tts.home_assistant_cloud'
-      selector:
-        entity:
-          filter:
-            - domain: tts  
 
-    media-play:
-      name: media-player
-      description: Select your available media player
+    notify_service:
+      name: Notify service name
+      description: Select the name of your notification service, where the notification should be sent.
       selector:
-        entity:
-          filter:
-            - domain: media_player
+        text: {}
+      default: notify.notify
 
 # We need these global variables to use them in templates
 
@@ -44,10 +36,13 @@ trigger:
     id: Activity-Antarctica
 
 action:
+
+    # requires spell macro from macros.jinja
   - variables:
       call_spelled: |
         {% from 'macros.jinja' import spell %}
         {{ spell(state_attr(act_ft8, 'callsign')) }}
+
       loc_spelled: |
         {% from 'macros.jinja' import spell %}
         {{ spell( (state_attr(act_ft8, 'locator'))[0] +
@@ -55,34 +50,27 @@ action:
                 ) }}   
       freq: |
         {{ states(act_ft8) | int // 1000 }}
-      msg_data: |
-        Antarctica station with the call sign {{ call_spelled }}, 
-        in locator field {{ loc_spelled }},
-        is active on {{ freq }} Mega Hertz.
 
     # Notification 
-  - service: notify.notify
+  - service: !input notify_service
     data:
       message: >
         Antarctica station {{ state_attr( act_ft8, 'callsign') 
         }} in {{ state_attr( act_ft8, 'locator') }} is active on {{
          states(act_ft8) | int //1000 }} MHz!
       title: OpenWebRX
-    enabled: true
 
-    # Anouncement
-  - service: tts.speak
-    target:
-      entity_id: !input tts-entity
+    # Anouncement: requires script blueprint webrx_announce
+  - service: script.webrx_announce
     data:
-      cache: true
-      message: >
-        {{ msg_data }}
-      media_player_entity_id: !input media-play
+      message: |-
+        Ham radio station from Antarctica with the callsign {{ call_spelled 
+        }}, in locator grid {{ loc_spelled 
+        }}, was decoded on {{ freq }} MHz!
 
   - delay:
       hours: 0
-      minutes: 5
+      minutes: 1
       seconds: 0
       milliseconds: 0
 
