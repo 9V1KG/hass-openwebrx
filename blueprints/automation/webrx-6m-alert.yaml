@@ -33,7 +33,7 @@ variables:
   act_speak_on: !input speak_on
 
 trigger_variables:
-  tvar_webrx_ft8: !input webrx_ft8
+  tvar_ft8: !input webrx_ft8
 
 # Only this trigger template needs to be changed for other blueprints
 
@@ -42,10 +42,10 @@ trigger:
     value_template: >-
       {# Activity on 6 m but not a 9V1 station #} 
       {{
-         ((state_attr(tvar_webrx_ft8,'freq') //1000000) == 50 ) and 
+         ((state_attr(tvar_ft8,'freq') //1000000) == 50 ) and 
          ((((as_timestamp(now()) - 
-         (state_attr(tvar_webrx_ft8,'timestamp')|int)/1000))) < 60) and
-         ((state_var(tvar_webrx_ft8, 'callsign')| truncate(3,true,'',0)) != '9V1') 
+         (state_attr(tvar_ft8,'timestamp')|int)/1000))) < 60) and
+         ((state_var(tvar_ft8, 'callsign')| truncate(3,true,'',0)) != '9V1') 
       }}
 
 action:

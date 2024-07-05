@@ -42,13 +42,13 @@ variables:
 
 trigger_variables:
   tvar_callsign_list: !input callsign_list
-  tvar_webrx_ft8: !input webrx_ft8
+  tvar_ft8: !input webrx_ft8
 
 trigger:
   - platform: template
     value_template: |-
       {% set calls = (states(tvar_callsign_list)).split(',') %}
-      {{ state_attr( tvar_webrx_ft8,'callsign') | upper in calls | trim }}
+      {{ state_attr( tvar_ft8,'callsign') | upper in calls | trim }}
     id: in-callsign-list
 
 action:

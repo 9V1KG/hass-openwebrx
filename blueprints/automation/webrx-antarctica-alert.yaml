@@ -33,7 +33,7 @@ variables:
   act_speak_on: !input speak_on
   
 trigger_variables:
-  tvar_webrx_ft8: !input webrx_ft8
+  tvar_ft8: !input webrx_ft8
 
 # Only this trigger template needs to be changed for other blueprints
 
@@ -42,8 +42,7 @@ trigger:
     value_template: |-
       {# Second letter of the locator field #}
       {% set ltrs = ['A','B','C','D'] %}
-      {{ (state_attr(tvar_webrx_ft8,'locator') | list)[1] in ltrs }}
-    id: Activity-Antarctica
+      {{ (state_attr(tvar_ft8,'locator') | list)[1] in ltrs }}
 
 action:
 
