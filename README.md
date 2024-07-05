@@ -65,8 +65,8 @@ Any further change to the Template, Rest or MQTT files only need a reload of the
 * `sensor.sdr_connected`      List of connected SDRs, derived from `sensor.openwebrx_version`
 
 #### Ping (ICMP) sensors
-* `binary_sensor.webrx_lan`   OpenWebRX Online status     
-The name of the Ping sensor depends on the name you gave in the ping integration.
+* `binary_sensor.openwebrx`   OpenWebRX Online status     
+The name of the Ping sensor depends on the name you gave in the ping integration, see above.
 
 ### Homeassistant entities card
 The file `card.yaml` contains - as a first example - an *entities card*, how the OpenWebRX status could be displayed. With *ADD CARD* select *MANUAL* and copy the yaml code to the card configuration.
