@@ -23,12 +23,14 @@ Custom defined jinja macros are stored in the hass data sub-directory `custom_te
 
 ### Homeassistant Ping (ICMP) integration
 
-To check the online status of your OpenWebRX, you also need to add the **Ping (ICMP)** Integration. 
+To check the online status of your OpenWebRX, you also need to add the **Ping (ICMP)** Integration.
+
 * Go to *Settings > Devices & Services*. 
 * In the bottom right corner, select the *Add Integration* button.
 * From the list, select **Ping (ICMP)**.   
-Follow the instructions on screen to complete the setup. Add the hostname or IP address of your OpenWebRX. Once defined, go to Entities and change the ping sensor entity id to `binary_sensor.openwebrx`.
-It will then appear as a binary sensor with status *on*, when connected, and *off*, when offline.
+
+Follow the instructions on screen to complete the setup. Add the hostname or IP address of your OpenWebRX. Once defined, go to Entities and change the ping sensor entity id to **`binary_sensor.openwebrx`**. It will then appear as a binary sensor with status *on*, when connected, and *off*, when offline.
+
 In the file `rest.yaml` and `templates.yaml` modify **`binary_sensor.openwebrx`** under `availability:` 
 according to the name of the binary sensor for your webrx, in case you have a different entity id.
 
@@ -46,9 +48,11 @@ Go to OpenWebRX settings. Under *Settings/Spotting and Reporting* scroll down to
 
 ### Homeassistant configuration
 
-Add the `rest.yaml`, `mqtt.yaml` and `template.yaml` files to your hass configuration directory, **or** modify and append your existing rest, mqtt and template yaml files with the corresponding sensor definitions from the yaml files in the repository.
+Add the `rest.yaml`, `mqtt.yaml` and `template.yaml` files to your hass configuration directory, **or** modify and append your existing rest, mqtt and template yaml files with the corresponding sensor definitions from the yaml files in the repository.  
+You need then to restart Home Assistant. Go to **Developer tools** > **YAML** > **CHECK CONFIGURATION**. Once the result is ok, click **RESTART**.  
 
-You then need to reload the yaml configuration. Go to *Developer tools > YAML* and look for **REST ENTITIES AND NOTIFY SERVICES**, **MANUALLY CONFIGURED MQTT ENTITIES** and **TEMPLATE ENTITIES**. Click on them to reload. You should then be able to find the new sensors under *Developer tools > states*. The following entities should be available:
+For any further change to the Template, Rest or MQTT files only need a reload of the yaml configuration. Go to *Developer tools > YAML* and look for **REST ENTITIES AND NOTIFY SERVICES**, **MANUALLY CONFIGURED MQTT ENTITIES** and **TEMPLATE ENTITIES**. Click on them to reload. You should then be able to find the new sensors under *Developer tools > states*. The following entities should be available:
+
 #### MQTT sensors
 * `sensor.openwebrx_ft8` Frequency of the latest decoded FT8 signal in kHz.
 * `sensor.openwebrx_rx`  Latest profile switched to.
@@ -79,7 +83,8 @@ The example in `automation.yaml` gives an alarm, when a call sign starting with 
 The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. You need to copy this file into your hass data directory under the same subdirectory `custom_templates`.
 
 ## Blueprints
-Some example automations are available as blueprints. You can add them via the configuration file `configuration.yaml ` or by importing them, using the Home assistant UI. In the blueprints you can
+Some example automations are available as blueprints. You can add them via the configuration file
+ `configuration.yaml ` or by importing them, using the Home assistant UI. In the blueprints you can
 switch on or off the spoken announcements.  
  **In order to get spoken announcements, you need to import the blueprint `webrx-announce.yaml` first.**
 
