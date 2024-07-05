@@ -48,10 +48,9 @@ Go to OpenWebRX settings. Under *Settings/Spotting and Reporting* scroll down to
 
 ### Homeassistant configuration
 
-Add the `rest.yaml`, `mqtt.yaml` and `template.yaml` files to your hass configuration directory, **or** modify and append your existing rest, mqtt and template yaml files with the corresponding sensor definitions from the yaml files in the repository.  
-You need then to restart Home Assistant. Go to **Developer tools** > **YAML** > **CHECK CONFIGURATION**. Once the result is ok, click **RESTART**.  
+Add the `rest.yaml`, `mqtt.yaml` and `template.yaml` files to your hass configuration directory, **or** modify and append your existing rest, mqtt and template yaml files with the corresponding sensor definitions from the yaml files in the repository. You then need to restart Home Assistant. Go to **Developer tools** > **YAML** > **CHECK CONFIGURATION**. Once the result is ok, click **RESTART**.  
 
-For any further change to the Template, Rest or MQTT files only need a reload of the yaml configuration. Go to *Developer tools > YAML* and look for **REST ENTITIES AND NOTIFY SERVICES**, **MANUALLY CONFIGURED MQTT ENTITIES** and **TEMPLATE ENTITIES**. Click on them to reload. You should then be able to find the new sensors under *Developer tools > states*. The following entities should be available:
+Any further change to the Template, Rest or MQTT files only need a reload of the yaml configuration. Go to *Developer tools > YAML* and look for **REST ENTITIES AND NOTIFY SERVICES**, **MANUALLY CONFIGURED MQTT ENTITIES** and **TEMPLATE ENTITIES**. Click on them to reload. You should then be able to find the new sensors under *Developer tools > states*. The following entities should be available:
 
 #### MQTT sensors
 * `sensor.openwebrx_ft8` Frequency of the latest decoded FT8 signal in kHz.
