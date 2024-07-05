@@ -2,16 +2,7 @@
 # All depend on Ping sensor 'binary_sensor.openwebrx' to check connection
 # of the WebSDR.
 
-# Shows the last FT8 decoded callsign
-# Derived from mqtt sensor 'sensor.openwebrx_ft8'
-- sensor:
-  - name: webrx-ft8-callsign
-    state: >
-      {{ state_attr( 'sensor.openwebrx_ft8', 'callsign') }}
-    availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
-    icon: mdi:view-headline
-
-# Time elapsed since last FT8 decode
+# Time elapsed since last FT8 decode in minutes
 # Derived from sensor mqtt sensor 'sensor.openwebrx_ft8'
 - sensor:
   - name: webrx-ft8-min_ago
@@ -23,22 +14,6 @@
       {% if te is defined and te >= 0 %}{{ te }}{% else %}0{% endif %}
     availability: "{{ is_state('binary_sensor.openwebrx','on') }}"     
     icon: mdi:clock
-
-# Binary sensor for FT-8 signals decoded over the last 60 min
-# uses mqtt sensor 'sensor.openwebrx_ft8' and template sensor
-# 'sensor.webrx_ft8_min_ago'
-- binary_sensor:
-  - name: webrx-ft8-decode
-    state: >
-      {{ (states('sensor.openwebrx_ft8')  != 'unknown') and
-         (states('sensor.webrx_ft8_min_ago') | int < 60 ) }}
-    availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
-    icon: >
-      {% if this.state %}
-        mdi:checkbox-marked-circle-outline
-      {% else %}
-        mdi:checkbox-blank-circle-outline
-      {% endif %}
 
 # Shows the connected SDRs and types 
 # derived from rest sensor 'sensor.openwebrx_version'

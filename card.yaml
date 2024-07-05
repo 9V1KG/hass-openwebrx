@@ -30,19 +30,27 @@ cards:
         secondary_info: last-changed
       - entity: sensor.openwebrx_rx
         name: Last profile selected
+      - type: section
+        label: Alarm triggering call sign list
+      - entity: input_text.call_sign_list
+        name: call signs separated by comma and space
     state_color: true
     title: OpenWebRX+
     show_header_toggle: false
   - type: conditional
     conditions:
-      - entity: binary_sensor.webrx_ft8_decode
-        state: 'on'
+      - condition: numeric_state
+        entity: sensor.webrx_ft8_min_ago
+        below: 2
     card:
       type: entities
       entities:
         - type: section
           label: FT8 decoding
-        - entity: sensor.webrx_ft8_callsign
+        - entity: sensor.openwebrx_ft8
+          type: attribute
+          attribute: callsign
+          icon: mdi:view-headline
           name: Last decoded call (FT8)
           secondary_info: last-changed
         - entity: sensor.openwebrx_ft8
