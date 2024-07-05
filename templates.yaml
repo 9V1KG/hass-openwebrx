@@ -1,5 +1,5 @@
 # OpenWebRX additional template sensors based on attributes
-# All depend on Ping sensor 'binary_sensor.webrx_lan' to check connection
+# All depend on Ping sensor 'binary_sensor.openwebrx' to check connection
 # of the WebSDR.
 
 # Shows the last FT8 decoded callsign
@@ -8,7 +8,7 @@
   - name: webrx-ft8-callsign
     state: >
       {{ state_attr( 'sensor.openwebrx_ft8', 'callsign') }}
-    availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
+    availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
     icon: mdi:view-headline
 
 # Time elapsed since last FT8 decode
@@ -21,7 +21,7 @@
       {% set te = (( as_timestamp(now()) 
       - state_attr( 'sensor.openwebrx_ft8', 'timestamp')/1000 )/ 60) | round(1) %}
       {% if te is defined and te >= 0 %}{{ te }}{% else %}0{% endif %}
-    availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"     
+    availability: "{{ is_state('binary_sensor.openwebrx','on') }}"     
     icon: mdi:clock
 
 # Binary sensor for FT-8 signals decoded over the last 60 min
@@ -32,7 +32,7 @@
     state: >
       {{ (states('sensor.openwebrx_ft8')  != 'unknown') and
          (states('sensor.webrx_ft8_min_ago') | int < 60 ) }}
-    availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
+    availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
     icon: >
       {% if this.state %}
         mdi:checkbox-marked-circle-outline
@@ -46,7 +46,7 @@
   - name: sdr_connected
     state: >
      {{ state_attr( 'sensor.openwebrx_version', 'sdrs') | count }}
-    availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
+    availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
     icon: mdi:signal-variant
     attributes:
       sdr: >

@@ -7,7 +7,7 @@ cards:
     entities:
       - type: section
         label: Status
-      - entity: binary_sensor.webrx_lan
+      - entity: binary_sensor.openwebrx
         name: Online status
         tap_action:
           action: url

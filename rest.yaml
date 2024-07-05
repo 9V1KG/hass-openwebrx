@@ -16,7 +16,7 @@
         {% else %}
           mdi:account-multiple
         {% endif %}
-      availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
+      availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
 
 # webrx version (status)
 - resource: http://your_openwebrx_link:8073/status.json
@@ -28,5 +28,5 @@
         - max_clients
         - sdrs
       icon: mdi:github-circle
-      availability: "{{ is_state('binary_sensor.webrx_lan','on') }}"
+      availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
 

@@ -1,6 +1,5 @@
 # Automation examples for OpenWebRX. Alerts based on call sign (example 1)
-# Locator grid (example 2) and frequency (example 3). Change your tts service
-# using your actual target and media_player_entity_id.
+# Change your tts service using your actual target and media_player_entity_id.
 
 # Example 1 for an alert when a 9V1 (Singapore) Station is active (was decoded)
 alias: "Alert: WebRX 9V1 station active"
