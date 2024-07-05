@@ -29,7 +29,7 @@ To check the online status of your OpenWebRX, you also need to add the **Ping (I
 * From the list, select **Ping (ICMP)**.   
 Follow the instructions on screen to complete the setup. Add the hostname or IP address of your OpenWebRX. Once defined, go to Entities and change the ping sensor entity id to `binary_sensor.openwebrx`.
 It will then appear as a binary sensor with status *on*, when connected, and *off*, when offline.
-In the file `rest.yaml` and `templates.yaml` modify `binary_sensor.openwebrx` under `availability:` 
+In the file `rest.yaml` and `templates.yaml` modify **`binary_sensor.openwebrx`** under `availability:` 
 according to the name of the binary sensor for your webrx, in case you have a different entity id.
 
 ### Homeassistant and OpenWebRX+ MQTT integration
