@@ -30,13 +30,13 @@ sequence:
       - condition: or
         conditions:
           - condition: state
-            entity_id: media_player.living_room_2
+            entity_id: !input media-play
             state: idle
           - condition: state
-            entity_id: media_player.living_room_2
+            entity_id: !input media-play
             state: paused
           - condition: state
-            entity_id: media_player.living_room_2
+            entity_id: !input media-play
             state: playing
     then:
       - service: tts.speak
