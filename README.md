@@ -55,11 +55,13 @@ Any further change to the Template, Rest or MQTT files only need a reload of the
 #### MQTT sensors
 * `sensor.openwebrx_ft8` Frequency of the latest decoded FT8 signal in kHz.
 * `sensor.openwebrx_rx`  Latest profile switched to.  
+
 Both sensors contain more information in their attributes.
 
 #### Rest sensors
 * `sensor.openwebrx_users`   Number of connected users.
 * `sensor.openwebrx_version` Version of the OpenWebRX+ software.  
+
 As for the mqtt sensors, more information is provided in the attributes. The sensor `sensor.openwebrx_users` is useful for  statistics, `sensor.openwebrx_version` provides the list of connected SDRs and their profiles.
 
 #### Template sensors
