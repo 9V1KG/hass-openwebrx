@@ -54,11 +54,13 @@ Any further change to the Template, Rest or MQTT files only need a reload of the
 
 #### MQTT sensors
 * `sensor.openwebrx_ft8` Frequency of the latest decoded FT8 signal in kHz.
-* `sensor.openwebrx_rx`  Latest profile switched to.
+* `sensor.openwebrx_rx`  Latest profile switched to.  
+Both sensors contain more information in their attributes.
 
 #### Rest sensors
 * `sensor.openwebrx_users`   Number of connected users.
-* `sensor.openwebrx_version` Version of the OpenWebRX+ software.
+* `sensor.openwebrx_version` Version of the OpenWebRX+ software.  
+As for the mqtt sensors, more information is provided in the attributes. The sensor `sensor.openwebrx_users` is useful for  statistics, `sensor.openwebrx_version` provides the list of connected SDRs and their profiles.
 
 #### Template sensors
 * `sensor.webrx_ft8_min_ago`  Time since last FT-8 decode in minutes, derived from `sensor.openwebrx_ft8`
@@ -104,4 +106,4 @@ The blueprint `webrx-antarctica-alert.yaml` sends a notification and makes an an
 ![markup-card-example](/assets/markup-card.png)
 
 ## Note
-Work in progress.
+More or less finished ...
