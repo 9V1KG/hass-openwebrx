@@ -69,7 +69,8 @@ As for the mqtt sensors, more information is provided in the attributes. The sen
 * `sensor.sdr_connected`      List of connected SDRs, derived from `sensor.openwebrx_version`
 
 #### Ping (ICMP) sensors
-* `binary_sensor.openwebrx`   OpenWebRX Online status     
+* `binary_sensor.openwebrx`   OpenWebRX Online status  
+   
 The name of the Ping sensor depends on the name you gave in the ping integration, see above.
 
 ### Homeassistant entities card
@@ -104,7 +105,11 @@ The blueprint `webrx-6m-alert.yaml` sends a notification and makes an annoucemen
 The blueprint `webrx-antarctica-alert.yaml` sends a notification and makes an annoucement, when a call sign in Antarctica was decoded, based on the second letter in the locator field.
 
 ## Example
+
+### Entities Card
 ![entities-card-example](/assets/entities-card.png)
+
+### Markup Card
 ![markup-card-example](/assets/markup-card.png)
 
 ## Note
