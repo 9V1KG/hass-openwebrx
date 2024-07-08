@@ -69,8 +69,8 @@ action:
     data:
       message: >
         Station from call sign list {{ state_attr( act_ft8, 'callsign') 
-        }} is active on {{ freq }} MHz! SNR: {{ state_attr( act_ft8, 'db') 
-        }} dB
+        }} is active on {{ freq 
+        }} MHz! SNR: {{ state_attr( act_ft8, 'db') | int }} dB
       title: OpenWebRX
     enabled: true
 
@@ -89,7 +89,7 @@ action:
           The Station from your call sign list, {{ call_spelled 
           }}, in locator grid {{ loc_spelled 
           }}, is active on {{ freq 
-          }} MHz! The signal to noise ratio is {{ state_attr( act_ft8, 'db')
+          }} MHz! The signal to noise ratio is {{ state_attr( act_ft8, 'db') | int
           }} Decibel.
       enabled: act_speak_on
 
