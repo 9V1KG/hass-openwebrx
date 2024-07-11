@@ -1,19 +1,34 @@
+# Blueprint meta data
 blueprint:
   name: WebRX-callsign-alert
-  description: Notification and spoken anouncement, when a specific call sign from the call sign list was decoded.
+  description: >
+    # OpenWebRX Callsign Alert 
+       
+    This blueprint allows a notification and an optional spoken anouncement, when a specific call sign from an
+    input text call sign list was decoded in FT-8. For the call sign list you need to define and use an input_text Helper. 
+    Call signs need to be input separated by a comma and a space, like for example "`7Q4AM, 8Q7EC, ...`".
+    The blueprint requires the **OpenWebRX Integration** using MQTT and Rest sensors.  
+    
+    
+    **Note:** If you select *Spoken Announcement*, you need to install another blueprint script **`webrx_announce`** and the
+    file **`macros.jinja`** first.
+    For a comlpete description please see `hass-openwebrx` on [Github](https://github.com/9V1KG/hass-openwebrx/).
+    
+  source_url: https://github.com/9V1KG/hass-openwebrx/blob/b924e57d9e380f9e93384e5fdfa00bbc3334dc77/blueprints/automation/webrx-callsign-alert.yaml
   domain: automation
+  author: 9V1KG Klaus
 
   input:
     webrx_ft8:
-      name: webrx-ft8
-      description: "Select the WebRX MQTT sensor OpenWebRX-FT8"
+      name: OpenWebRX FT-8 MQTT sensor
+      description: Select the WebRX MQTT sensor, default is **`OpenWebRX-FT8`**.
       selector:
         entity:
           filter:
             - domain: sensor  
 
     callsign_list:
-      name: call-sign-list
+      name: Call sign list
       description: "Select the text field helper 'call-sign-list' containing the call signs, separated by comma."
       selector:
         entity:
@@ -33,7 +48,7 @@ blueprint:
       selector:
         boolean:
       default: true
-  
+      
 # We need these global variables to use them in templates
 
 variables:
@@ -54,13 +69,17 @@ trigger:
 action:
   - variables:
       call_spelled: |
+        {% if act_speak_on %}
         {% from 'macros.jinja' import spell %}
         {{ spell(state_attr(act_ft8, 'callsign')) }}
+        {% endif %}
       loc_spelled: |
+        {% if act_speak_on %}
         {% from 'macros.jinja' import spell %}
         {{ spell( (state_attr(act_ft8, 'locator'))[0] +
                   (state_attr(act_ft8, 'locator'))[1]   
                 ) }}   
+        {% endif %}
       freq: |
         {{ states(act_ft8) | int // 1000 }}
 
@@ -69,28 +88,29 @@ action:
     data:
       message: >
         Station from call sign list {{ state_attr( act_ft8, 'callsign') 
-        }} is active on {{ freq 
-        }} MHz! SNR: {{ state_attr( act_ft8, 'db') | int }} dB
+        }} is active on {{ freq }} MHz! SNR: {{ state_attr( act_ft8, 'db') | int 
+        }} dB
       title: OpenWebRX
     enabled: true
 
-    # Anouncement: requires script blueprint webrx_announce
+    # Anouncement: requires script blueprint spoken-notification.yaml
+
   - if:
     - condition: template
       value_template: >
-        {{ (states('script.webrx_announce') == 'unknown') and act_speak_on }}
+        {{ (states('script.spoken_notification') == 'unknown') and act_speak_on }}
     then:
     - stop: "No announcement or blueprint missing "
 
     else:
-    - service: script.webrx_announce
+    - service: script.spoken_notification
       data:
         message: |-
           The Station from your call sign list, {{ call_spelled 
           }}, in locator grid {{ loc_spelled 
           }}, is active on {{ freq 
-          }} MHz! The signal to noise ratio is {{ state_attr( act_ft8, 'db') | int
-          }} Decibel.
+          }} MHz! The signal to noise ratio is {{
+           state_attr( act_ft8, 'db') | int }} Decibel.
       enabled: act_speak_on
 
   - delay:
@@ -100,4 +120,3 @@ action:
       milliseconds: 0
 
 mode: single
-

@@ -1,0 +1,114 @@
+blueprint:
+  name: Spoken Notification
+  description: >
+    # Spoken Notification
+    
+    This blueprint script makes spoken announcements using text-to-speech (TTS) and an 
+    optonal alert sound.
+    voice announcements on or off. This is useful, when you  want to silence the spoken alert automations 
+    automatically, for example during night time. With the Alert sound switch you can select an optional 
+    sound to be played, before the spoken announcement starts.  
+    
+    
+    For a complete description please see `hass-openwebrx` on [Github](https://github.com/9V1KG/hass-openwebrx/).
+
+  source_url: https://github.com/9V1KG/hass-openwebrx/blob/b924e57d9e380f9e93384e5fdfa00bbc3334dc77/blueprints/script/spoken-notification.yaml
+  author: Klaus 9V1KG
+  domain: script
+  input:
+    base_input:
+      name: Mandatory Input
+      input:
+            
+        tts-entity:
+          name: Text-to-speech entity
+          description: Select available tts entity like Home Assistant Cloud
+          selector:
+            entity:
+              filter:
+                - domain: tts  
+
+        media-play:
+          name: Media Player
+          description: Select your available media player
+          selector:
+            entity:
+              filter:
+                - domain: media_player
+
+        say-on-off:
+          name: Voice announcement switch
+          description: Select a boolean input switch to toggle voice on/off (e.g. during night)
+          selector:
+            entity:
+              filter:
+                - domain: input_boolean
+
+        alert-sound:
+          name: Alert sound before announcement
+          description: Select optional start of the announcement with an alert sound (on/off)
+          selector:
+            boolean:
+          default: false
+
+
+    my_section:
+      name: Alert tone selection
+      description: Select alert sound and media player for the optional sound before the voice announcement
+      input:
+            
+        play-alert:
+          name: Notification sound
+          description: Select the same media player as above and a sound file with the desired notification sound
+          selector:
+            media:
+          default:
+            entity_id: media_player.dummy
+            media_content_type: music
+            media_content_id: media-source://media_source/local/dummy.wav
+
+alias: Spoken notification
+
+fields:
+  message:
+    selector:
+      text:
+    name: message
+    required: true
+
+sequence:
+  - if:
+      - condition: state
+        entity_id: !input say-on-off
+        state: "on"
+    then:
+
+      - if:
+          - condition: or
+            conditions:
+              - condition: state
+                entity_id: !input media-play
+                state: idle
+              - condition: state
+                entity_id: !input media-play
+                state: paused
+              - condition: state
+                entity_id: !input media-play
+                state: playing
+        then:
+          - service:  media_player.play_media
+            data: !input play-alert
+ 
+          - service: tts.speak
+            target:
+              entity_id: !input tts-entity
+            data:
+              cache: true
+              message: >
+                {{message}}     
+              media_player_entity_id: !input media-play
+        else:
+          - stop: Media player not ready
+
+icon: mdi:account-voice
+mode: single

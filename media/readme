@@ -1,0 +1,4 @@
+Sounds to be played before the spoken announcements. 
+Put into the home assistant media directory.
+Example: mixkit-clear-announce-tones-2861.wav
+Source: https://mixkit.co/free-sound-effects/alarm/
