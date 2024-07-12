@@ -88,8 +88,8 @@ blueprint:
       default: true
 
     rename:
-      name: New name of the automation (rename)
-      description: Only change, if you plan to store the generated automation under a different name.
+      name: New name of the automation based on the above template
+      description: Enter this name also, when you store the newly generated blueprint automation (Rename).
       selector:
         text:
       default: WebRX-template-alert
