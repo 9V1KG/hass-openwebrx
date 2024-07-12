@@ -127,8 +127,6 @@ The blueprint requires the **OpenWebRX Integration** using MQTT and Rest sensors
 
 **Note:** If you select *Spoken Notification*, you need to install another blueprint script **`spoken-notification`** and the
 file **`macros.jinja`** first.
-For a comlpete description please see `hass-openwebrx` on [Github](https://github.com/9V1KG/hass-openwebrx/).
-
 
 #### Template example Philippine call signs
 ```
@@ -140,6 +138,7 @@ For a comlpete description please see `hass-openwebrx` on [Github](https://githu
  '4D','4E','4F','4G','4H','4I'] %}
 {{ prefix in du }}
 ```
+More template examples in the blueprint automation directory in the file `README`.
 
 ## Card Examples
 
