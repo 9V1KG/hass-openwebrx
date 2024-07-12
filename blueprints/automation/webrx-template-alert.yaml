@@ -86,7 +86,14 @@ blueprint:
       selector:
         boolean:
       default: true
-      
+
+    rename:
+      name: New name of the automation (rename)
+      description: Only change, if you plan to store the generated automation under a different name.
+      selector:
+        text:
+      default: WebRX-template-alert
+    
 # We need these global variables to use them in templates
 
 variables:
@@ -94,13 +101,13 @@ variables:
   act_speak_on: !input speak_on
   act_last_call: !input last_call
   act_tm: !input repeat_minutes
+  act_rename: !input rename
 
 # Checks for entity_id based on friendly name 'WebRX-callsign-alert'
-# Don't rename it!
   bp_entid: >
     {% set entid = (states
      | selectattr('domain', 'eq', 'automation')
-     | selectattr('attributes.friendly_name','eq','WebRX-template-alert') 
+     | selectattr('attributes.friendly_name','eq', act_rename) 
      | selectattr('state','eq','on')
      | map(attribute='object_id')
      | list) %}
