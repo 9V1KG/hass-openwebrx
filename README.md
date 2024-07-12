@@ -91,7 +91,7 @@ The file `macros.jinja` in the subdirectory `custom_templates` contains a macro 
 Some example automations are available as blueprints. You can add them via the configuration file
  `configuration.yaml ` or by importing them, using the Home assistant UI. In the blueprints you can
 switch on or off the spoken announcements.  
- **In order to get spoken announcements, you need to import the blueprint `webrx-announce.yaml` first.**
+ **In order to get spoken announcements, you need to import the blueprint `spoken-notification.yaml` first.**
 
 ### Alarm for a list of specific call signs
 Define a **Text** helper under *Settings -> Devices and Services -> Helpers*. Give it the name `call-sign-list`. You can use the entities card to display the list.  
