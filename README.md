@@ -81,8 +81,7 @@ The second example is a *markdown card*. It will show the statistics of decoded 
 Once, the sensors are added and working, you can easily define alarms, when a certain call sign is decoded or when activities show up on a selected band *etc.*  
 
 Use the combination of frequency `sensor.openwebrx_ft8` and elapsed time `sensor.webrx_ft8_min_ago` to trigger an alarm for band activities. Use the `locator` attribute of `sensor.openwebrx_ft8` to trigger
-an alarm, when a certain locator field (or list of locator fields) was detected.   
-The example in `automation.yaml` gives an alarm, when a call sign starting with `9V1` was decoded with FT-8.
+an alarm, when a certain locator field (or list of locator fields) was detected.
 
 ### Macro to spell a call sign with the phonetic alphabet
 The file `macros.jinja` in the subdirectory `custom_templates` contains a macro to spell out a call sign (or any word) using the phonetic alphabet. You need to copy this file into your hass data directory under the same subdirectory `custom_templates`.
