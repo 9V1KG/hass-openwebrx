@@ -131,8 +131,8 @@ file **`macros.jinja`** first.
 #### Template example Philippine call signs
 ```
 {% set prefix = 
- (state_attr(tvar_ft8,'callsign')|list)[0] 
-+(state_attr(tvar_ft8,'callsign')|list)[1] %}
+ (state_attr(ft8,'callsign')|list)[0] 
++(state_attr(ft8,'callsign')|list)[1] %}
 {# Philippines #} {% set du = 
 ['DU','DV','DW','DX','DY','DZ',
  '4D','4E','4F','4G','4H','4I'] %}

@@ -3,19 +3,30 @@
 ## Template example Philippine call signs
 ```
 {% set prefix = 
- (state_attr(tvar_ft8,'callsign')|list)[0] 
-+(state_attr(tvar_ft8,'callsign')|list)[1] %}
+ (state_attr(ft8,'callsign')|list)[0] 
++(state_attr(ft8,'callsign')|list)[1] %}
 {# Philippines #} {% set du = 
 ['DU','DV','DW','DX','DY','DZ',
  '4D','4E','4F','4G','4H','4I'] %}
 {{ prefix in du }}
 ```
+## Template example Antarctica, but not 9V1
+```
+{# Activity on 6 m but not a 9V1 station #} 
+{{
+ ( (states(ft8,'freq')//1000) == 50 ) 
+ and 
+ (((as_timestamp(now()) - (state_attr(ft8,'timestamp')|int)/1000)) < 60)
+ and
+ ( (state_var(ft8, 'callsign') | truncate(3,true,'',0)) != '9V1') 
+}}
+```
 ## Template example African station
 ```
 {# Only the first 2 letters of the locator #}
 {% set field = 
-  (state_attr(tvar_ft8,'locator') | list)[0] 
-+ (state_attr(tvar_ft8,'locator') | list)[1] %}
+  (state_attr(ft8,'locator') | list)[0] 
++ (state_attr(ft8,'locator') | list)[1] %}
 {# Africa #} {% set af = 
 ['JM','IL','JL','KL','ML','IK','JK','KK','LK',
 'IJ','JJ','KJ','LJ','JI','KI','LI','JH','KH',
@@ -37,3 +48,9 @@
 state_attr(ft8,'callsign')[1] in dl }}
 
 ```
+## Template example Antarctica
+```
+{# Second letter of the locator field #}
+{% set ltrs = ['A','B','C','D'] %}
+{{ (state_attr(ft8,'locator') | list)[1] in ltrs }}
+``` 
