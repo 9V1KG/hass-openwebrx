@@ -138,7 +138,7 @@ file **`macros.jinja`** first.
  '4D','4E','4F','4G','4H','4I'] %}
 {{ prefix in du }}
 ```
-More template examples in the blueprint [automation directory](blueprints/automation) in the file `README`.
+More template examples in the [blueprint automation directory](blueprints/automation) in the file `README`.
 
 ## Card Examples
 
