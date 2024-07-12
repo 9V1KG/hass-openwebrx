@@ -10,7 +10,7 @@
  '4D','4E','4F','4G','4H','4I'] %}
 {{ prefix in du }}
 ```
-## Template example Antarctica, but not 9V1
+## Template example 6m activity, but not 9V1
 ```
 {# Activity on 6 m but not a 9V1 station #} 
 {{
