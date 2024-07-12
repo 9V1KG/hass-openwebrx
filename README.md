@@ -104,7 +104,21 @@ The blueprint `webrx-6m-alert.yaml` sends a notification and makes an annoucemen
 ### Alarm for activity from a station in Antarctica
 The blueprint `webrx-antarctica-alert.yaml` sends a notification and makes an annoucement, when a call sign in Antarctica was decoded, based on the second letter in the locator field.
 
-## Example
+### Alarm for template based trigger
+tbd.
+
+#### Template example Philippine call signs
+```
+{% set field = 
+ (state_attr(tvar_ft8,'callsign')|list)[0] 
++(state_attr(tvar_ft8,'callsign')|list)[1] %}
+{# Philippines #} {% set du = 
+['DU','DV','DW','DX','DY','DZ',
+ '4D','4E','4F','4G','4H','4I'] %}
+{{ field in du }}
+```
+
+## Card Examples
 
 ### Entities Card
 ![entities-card-example](/assets/entities-card.png)
