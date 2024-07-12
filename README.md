@@ -105,7 +105,30 @@ The blueprint `webrx-6m-alert.yaml` sends a notification and makes an annoucemen
 The blueprint `webrx-antarctica-alert.yaml` sends a notification and makes an annoucement, when a call sign in Antarctica was decoded, based on the second letter in the locator field.
 
 ### Alarm for template based trigger
-tbd.
+
+This blueprint allows a notification and an optional spoken anouncement of FT-8 decoded call signs 
+based on a trigger template. When the template evaluates to `true`, the notification/announcement is triggered.
+In the template you can use the variable ft8 with the following attributes: 
+
+* `state_attr( ft8, 'callsign')` call sign
+
+* `state_attr( ft8, 'locator')`  maidenhead locator, e.g. OJ11XI
+
+* `state_attr( ft8, 'db')` SNR of the decoded signal in dB.
+
+
+The variable ft8 itself provides the frequency in kHz.  
+
+
+An additional input text helper stores the recent call sign already announced to avoid repeating announcements. 
+Announcements of the same call sign on the same frequency are by default every 30 minutes.
+The blueprint requires the **OpenWebRX Integration** using MQTT and Rest sensors.  
+
+
+**Note:** If you select *Spoken Notification*, you need to install another blueprint script **`spoken-notification`** and the
+file **`macros.jinja`** first.
+For a comlpete description please see `hass-openwebrx` on [Github](https://github.com/9V1KG/hass-openwebrx/).
+
 
 #### Template example Philippine call signs
 ```
