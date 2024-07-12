@@ -1,0 +1,39 @@
+# Template examples for webrx-template-alert
+
+## Template example Philippine call signs
+```
+{% set prefix = 
+ (state_attr(tvar_ft8,'callsign')|list)[0] 
++(state_attr(tvar_ft8,'callsign')|list)[1] %}
+{# Philippines #} {% set du = 
+['DU','DV','DW','DX','DY','DZ',
+ '4D','4E','4F','4G','4H','4I'] %}
+{{ prefix in du }}
+```
+## Template example African station
+```
+{# Only the first 2 letters of the locator #}
+{% set field = 
+  (state_attr(tvar_ft8,'locator') | list)[0] 
++ (state_attr(tvar_ft8,'locator') | list)[1] %}
+{# Africa #} {% set af = 
+['JM','IL','JL','KL','ML','IK','JK','KK','LK',
+'IJ','JJ','KJ','LJ','JI','KI','LI','JH','KH',
+'JG','KG','JF','KF'] %}
+{{ field in af }}
+
+```
+## Template example German call signs
+```
+{# Stations from Germany #} 
+{% set dl = 
+['DA','DB','DC','DD','DE',
+ 'DF','DG','DH','DI','DJ',
+ 'DK','DL','DM','DN','DO',
+ 'DP','DQ','DR',
+ 'Y1','Y2','Y3','Y4','Y5',
+ 'Y6','Y7','Y8','Y9'] %}
+{{ state_attr(ft8,'callsign')[0]+
+state_attr(ft8,'callsign')[1] in dl }}
+
+```

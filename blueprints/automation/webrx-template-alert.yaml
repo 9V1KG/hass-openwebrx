@@ -1,14 +1,25 @@
 # Blueprint meta data
 blueprint:
-  name: WebRX-antarctica-alert
+  name: WebRX-template-alert
   author: 9V1KG Klaus
   homeassistant:
     min_version: 2024.7.0
   description: >
-    # OpenWebRX Antarctica Alert 
+    # OpenWebRX Template Alert 
        
-    This blueprint allows a notification and an optional spoken anouncement, when a call sign 
-    from Antarctica was decoded in FT-8.
+    This blueprint allows a notification and an optional spoken anouncement of FT-8 decoded call signs 
+    based on a trigger template. When the template evaluates to `true`, the notification/announcement is triggered.
+    In the template you can use the variable ft8 with the following attributes: 
+    
+    * `state_attr( ft8, 'callsign')` call sign
+    
+    * `state_attr( ft8, 'locator')`  maidenhead locator, e.g. OJ11XI
+    
+    * `state_attr( ft8, 'db')` SNR of the decoded signal in dB.
+    
+    
+    The variable ft8 itself provides the frequency in kHz.  
+    
     
     An additional input text helper stores the recent call sign already announced to avoid repeating announcements. 
     Announcements of the same call sign on the same frequency are by default every 30 minutes.
@@ -19,7 +30,7 @@ blueprint:
     file **`macros.jinja`** first.
     For a comlpete description please see `hass-openwebrx` on [Github](https://github.com/9V1KG/hass-openwebrx/).
     
-  source_url: https://github.com/9V1KG/hass-openwebrx/blob/b924e57d9e380f9e93384e5fdfa00bbc3334dc77/blueprints/automation/webrx-antarctica-alert.yaml
+# source_url: https://github.com/9V1KG/hass-openwebrx/blob/b924e57d9e380f9e93384e5fdfa00bbc3334dc77/blueprints/automation/webrx-template-alert.yaml
   domain: automation
   author: 9V1KG Klaus
 
@@ -31,6 +42,16 @@ blueprint:
         entity:
           filter:
             - domain: sensor  
+
+    trig_templ:
+      name: Trigger Template. 
+      description: Trigger template, use `ft8` as variable for the OpenWebRX MQTT entity.
+      selector:
+        template:
+      default: >
+        {# Station from Singapore #}
+        {{ state_attr(ft8,'callsign')[0]+
+        state_attr(ft8,'callsign')[1] == '9V' }}
 
     last_call:
       name: Last call sign announced
@@ -75,69 +96,72 @@ variables:
   act_tm: !input repeat_minutes
 
 # Checks for entity_id based on friendly name 'WebRX-callsign-alert'
+# Don't rename it!
   bp_entid: >
     {% set entid = (states
      | selectattr('domain', 'eq', 'automation')
-     | selectattr('attributes.friendly_name','eq','WebRX-antarctica-alert') 
+     | selectattr('attributes.friendly_name','eq','WebRX-template-alert') 
      | selectattr('state','eq','on')
      | map(attribute='object_id')
      | list) %}
-    {% if entid | count != 0 %}{% set entid = 'automation.'+entid[0] %}{% endif %}
+    {% if entid | count != 0 %}{{'automation.'+entid[0] }}{% endif %}
 
 trigger_variables:
-  tvar_ft8: !input webrx_ft8
+  ft8: !input webrx_ft8
 
 trigger:
   - platform: template
-    value_template: |-
-      {# Second letter of the locator field #}
-      {% set ltrs = ['A','B','C','D'] %}
-      {{ (state_attr(tvar_ft8,'locator') | list)[1] in ltrs }}
-    id: antarctica-act
+    value_template: !input trig_templ
 
+# Condition uses last_triggered from this automation blueprint
 condition:
 - condition: template
   value_template: >
-    {% if entid %}
-    {% set td = (as_timestamp(now()) - as_timestamp(state_attr(bp_entid,'last_triggered')))/60 %}
-    {% set cur_call = state_attr( act_ft8,'callsign')+ '-' + ((states( act_ft8)| int // 1000) | string) + 'M' %}
-    {{ cur_call != states(act_last_call) or (cur_call == states(act_last_call) and ( td > act_tm )) }}
-    {% endif %}
+    {% set td = (as_timestamp(now()) 
+               - as_timestamp(state_attr(bp_entid,'last_triggered')))/60 %}
+    {% set cur_call = state_attr( act_ft8,'callsign')+ '-' 
+                      + ((states( act_ft8)| int // 1000) | string) + 'M' %}
+    {{ cur_call != states(act_last_call) or 
+      (cur_call == states(act_last_call) and ( td > act_tm )) }}
 action:
   - variables:
+      call_sign: |
+        {{ state_attr(act_ft8,'callsign') }}
+      loc_grid:  |
+        {{ state_attr(act_ft8,'locator') }}
+      freq: |
+        {{ states(act_ft8) | int // 1000 }}
+
       call_spelled: |
         {% if act_speak_on %}
         {% from 'macros.jinja' import spell %}
-        {{ spell(state_attr(act_ft8, 'callsign')) }}
+        {{ spell(state_attr(act_ft8,'callsign')) }}
         {% endif %}
       loc_spelled: |
         {% if act_speak_on %}
         {% from 'macros.jinja' import spell %}
-        {{ spell( (state_attr(act_ft8, 'locator'))[0] +
-                  (state_attr(act_ft8, 'locator'))[1]   
-                ) }}   
+        {{ spell( (state_attr(act_ft8,'locator'))[0] +
+                  (state_attr(act_ft8,'locator'))[1]   
+                ) }}
         {% endif %}
-      freq: |
-        {{ states(act_ft8) | int // 1000 }}
 
-    # Notification
-  - service: !input notify_service
-    data:
-      message: >
-        Antarctica Station {{ state_attr( act_ft8, 'callsign') 
-        }} is active on {{ freq }} MHz. SNR: {{ state_attr( act_ft8, 'db') | int 
-        }} dB
-      title: OpenWebRX ANtarctica alert
-    enabled: true
-
-    # Store call and freq in input_text helper
-    
+    # Store call and freq in input_text helper    
   - service: input_text.set_value
     target:
       entity_id: !input last_call
     data:
       value: >
-        {{ state_attr(act_ft8,'callsign') }}-{{ states(act_ft8)| int //1000 }}M
+        {{ call_sign }}-{{ freq }}M
+        
+    # Notification
+  - service: !input notify_service
+    data:
+      message: >
+        Station {{ call_sign 
+        }} is active on {{ freq }} MHz! SNR: {{ state_attr( act_ft8, 'db') | int 
+        }} dB
+      title: OpenWebRX
+    enabled: true
     
     # Anouncement: requires script blueprint spoken-notification.yaml
 
@@ -154,18 +178,18 @@ action:
       - service: script.spoken_notification
         data:
           message: |-
-            The Antarctica station with the call sign, {{ call_spelled 
+            The Station with the call sign, {{ call_spelled 
             }}, in locator grid {{ loc_spelled 
             }}, is active on {{ freq 
             }} MHz! The signal to noise ratio is {{
-             state_attr( act_ft8, 'db') | int }} Decibel.
+            state_attr( act_ft8, 'db') | int }} Decibel.
         enabled: act_speak_on
     else:
       - stop: "Spoken notification off or blueprint script missing"
 
   - delay:
       hours: 0
-      minutes: 2
+      minutes: 1
       seconds: 0
       milliseconds: 0
 
