@@ -98,7 +98,8 @@ sequence:
         then:
           - service:  media_player.play_media
             data: !input play-alert
- 
+            enabled: !input alert-sound
+
           - service: tts.speak
             target:
               entity_id: !input tts-entity
