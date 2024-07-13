@@ -130,7 +130,7 @@ Give it the name `last_call`. You can then select it when running the blueprints
 
 ### Spoken Announcement blueprint
 
-The blueprint `spoken-announcement.yaml` in `/blueprints/script` directory is required, when you
+The blueprint **`spoken-announcement.yaml`** in `/blueprints/script` directory is required, when you
 want to receive spoken announcements in addition to the notifications. It requires to select a
 TTS entity, your media player, and a *Voice announcement switch*, an input_boolean helper, 
 to switch on-off all announcements.
@@ -143,7 +143,7 @@ sound file from your media directory. An example alarm sound is given in the dir
 
 ### Alarm for a list of specific call signs
 
-The blueprint `webrx-callsign-alert` in `/blueprints/automations` makes a notification and 
+The blueprint **`webrx-callsign-alert.yaml`** in `/blueprints/automations` makes a notification and 
 announcement for specific call signs in a call sign list. 
 Define a **Text** helper under *Settings -> Devices and Services -> Helpers*. 
 Give it the name `call-sign-list`. You can use the entities card to display the list.  
@@ -153,7 +153,7 @@ You will receive notifications, once a call sign from this list was decoded.
 
 ### Alarm for template based trigger
 
-The blueprint `webrx-template-alert` in `/blueprints/automations` allows a notification and 
+The blueprint **`webrx-template-alert.yaml`** in `/blueprints/automations` allows a notification and 
 an optional spoken anouncement of FT-8 decoded call signs based on a **trigger template**. 
 When the template evaluates to `true`, the notification/announcement is triggered.
 In the template you can use the variable ft8 with the following attributes: 
