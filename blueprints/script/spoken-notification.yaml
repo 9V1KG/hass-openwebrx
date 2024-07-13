@@ -12,7 +12,7 @@ blueprint:
     
     For a complete description please see `hass-openwebrx` on [Github](https://github.com/9V1KG/hass-openwebrx/).
 
-  source_url: blueprints/script/spoken-notification.yaml
+  source_url: https://github.com/9V1KG/hass-openwebrx/blob/main/blueprints/automation/webrx-callsign-alert.yaml
   author: Klaus 9V1KG
   domain: script
   input:
