@@ -19,7 +19,7 @@ blueprint:
     file **`macros.jinja`** first.
     For a comlpete description please see `hass-openwebrx` on [Github](https://github.com/9V1KG/hass-openwebrx/).
     
-  source_url: https://github.com/9V1KG/hass-openwebrx/blob/b924e57d9e380f9e93384e5fdfa00bbc3334dc77/blueprints/automation/webrx-callsign-alert.yaml
+  source_url: blueprints/automation/webrx-callsign-alert.yaml
   domain: automation
   author: 9V1KG Klaus
 

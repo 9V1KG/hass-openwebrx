@@ -12,7 +12,7 @@ blueprint:
     
     For a complete description please see `hass-openwebrx` on [Github](https://github.com/9V1KG/hass-openwebrx/).
 
-  source_url: https://github.com/9V1KG/hass-openwebrx/blob/b924e57d9e380f9e93384e5fdfa00bbc3334dc77/blueprints/script/spoken-notification.yaml
+  source_url: blueprints/script/spoken-notification.yaml
   author: Klaus 9V1KG
   domain: script
   input:
