@@ -118,20 +118,20 @@ your hass data directory under the same subdirectory `custom_templates`.
 
 There are two blueprint automations and one blueprint script available. You can add them via the 
 configuration file `configuration.yaml`, or by importing them, using the Home assistant UI. 
-In both blueprints automations you can switch on/off spoken announcements.  
+In both blueprints automations you can switch on/off spoken notifications.  
 
 
-**In order to get spoken announcements, you need to import the blueprint `spoken-notification.yaml` first.**  
+**In order to get spoken notifications, you need to import the blueprint `spoken-notification.yaml` first.**  
 
 
 Both automation blueprints need an input_text helper, to store the last announced call sign, frequency and 
 timestamp. Create a **Text** helper under *Settings -> Devices and Services -> Helpers*. 
 Give it the name `last_call`. You can then select it when running the blueprints.
 
-### Spoken Announcement blueprint
+### Spoken Notifications Blueprint
 
-The blueprint **`spoken-announcement.yaml`** in `/blueprints/script` directory is required, when you
-want to receive spoken announcements in addition to the notifications. It requires to select a
+The blueprint **`spoken-notification.yaml`** in `/blueprints/script` directory is required, when you
+want to receive spoken notifications in addition to the notifications. It requires to select a
 TTS entity, your media player, and a *Voice announcement switch*, an input_boolean helper, 
 to switch on-off all announcements.
 Create a **Toggle** helper under *Settings -> Devices and Services -> Helpers*, using for example
@@ -141,7 +141,7 @@ the name `Say-on-off`. You can later select it in the blueprint.
 If you want an alert sound before the actual voice announcement, you can switch it on and select the
 sound file from your media directory. An example alarm sound is given in the directory `media`.
 
-### Alarm for a list of specific call signs
+### Alarm for calls in a call sign list
 
 The blueprint **`webrx-callsign-alert.yaml`** in `/blueprints/automations` makes a notification and 
 announcement for specific call signs in a call sign list. 
@@ -174,7 +174,7 @@ in the blueprint.
 
 
 **Note:** If you select *Spoken Notification*, you need to install another blueprint script 
-**`spoken-notification`** and the file **`macros.jinja`** first.
+**`spoken-notification`** and the file **`macros.jinja`** first (see above).
 
 #### Template example Philippine call signs
 ```
