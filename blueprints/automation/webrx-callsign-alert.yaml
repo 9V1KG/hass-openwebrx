@@ -69,7 +69,7 @@ blueprint:
 
     speak_on:
       name: Spoken Notification
-      description: Switch on, when you want a spoken announcement beside the notification. Requires Blueprint 'webrx-announce.yaml'.
+      description: Switch on, when you want a spoken announcement beside the notification. Requires Blueprint 'spoken-notification.yaml'.
       selector:
         boolean:
       default: true
