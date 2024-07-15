@@ -137,6 +137,18 @@ action:
                 ) }}   
         {% endif %}
 
+      # Check for entity id of script friendly name, switch
+      # speak_on variable off, when not found.
+      spn_id: >
+        {% set scrid = (states
+         | selectattr('domain', 'eq', 'script')
+         | selectattr('attributes.friendly_name','eq', act_sn) 
+         | map(attribute='object_id')
+         | list ) -%}
+        {% if scrid != 0 -%}script.{{scrid[0] }}
+        {% else %}{% set act_speak_on = false %}{% endif %}
+
+
     # Store call, freq and timestamp in input_text helper     
   - service: input_text.set_value
     target:
@@ -155,28 +167,16 @@ action:
       title: OpenWebRX
     enabled: true
     
-    # Checking for 'Spoken Notification' script
-  - if:
-    - condition: template
-      value_template: >
-        {% set scrid = (states
-         | selectattr('domain', 'eq', 'script')
-         | selectattr('attributes.friendly_name','eq', act_sn) 
-         | map(attribute='object_id')
-         | list | count ) %}
-        {{ ( scrid != 0) and act_speak_on }}
-    then:
-      - service: script.spoken_notification
-        data:
-          message: |-
-            The Station from your call sign list, {{ call_spelled 
-            }}, in locator grid {{ loc_spelled 
-            }}, is active on {{ freq 
-            }} MHz! The signal to noise ratio is {{
-            state_attr( act_ft8, 'db') | int }} Decibel.
-        enabled: act_speak_on
-    else:
-      - stop: "Spoken notification off or blueprint script missing"
+    # Spoken Notification
+  - service: "{{ spn_id }}"
+    data:
+      message: |-
+        The Station from your call sign list, {{ call_spelled 
+        }}, in locator grid {{ loc_spelled 
+        }}, is active on {{ freq 
+        }} MHz! The signal to noise ratio is {{
+        state_attr( act_ft8, 'db') | int }} Decibel.
+    enabled: "{{ act_speak_on }}"
 
   - delay:
       hours: 0
