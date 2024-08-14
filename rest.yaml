@@ -1,7 +1,21 @@
-# webrx user count
-- resource: http://your_webrx.com:8073/metrics.json
+# webrx version (status)
+- resource: http://9v1kg.bpmsg.com:8073/status.json
+  sensor:
+    - name: "OpenWebRX_version"
+      unique_id: This_should_be_a_unique_id_for_webrx_status_0001
+      value_template: "{{ value_json.version }}"
+      json_attributes:
+        - receiver
+        - max_clients
+        - sdrs
+      icon: mdi:git
+      availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
+
+# webrx users
+- resource: http://9v1kg.bpmsg.com:8073/metrics.json
   sensor:
     - name: "OpenWebRX_users"
+      unique_id: This_should_be_a_unique_id_for_webrx_users_0002
       value_template: "{{ value_json.openwebrx.users | int }}"
       json_attributes:
         - pskreporter
@@ -17,16 +31,3 @@
           mdi:account-multiple
         {% endif %}
       availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
-
-# webrx version (status)
-- resource: http://your_openwebrx_link:8073/status.json
-  sensor:
-    - name: "OpenWebRX_version  "
-      value_template: "{{ value_json.version }}"
-      json_attributes:
-        - receiver
-        - max_clients
-        - sdrs
-      icon: mdi:github-circle
-      availability: "{{ is_state('binary_sensor.openwebrx','on') }}"
-

@@ -44,6 +44,11 @@ blueprint:
               filter:
                 - domain: input_boolean
 
+    my_section:
+      name: Alert tone
+      description: Select alert sound and media player for the optional sound before the voice announcement
+      input:
+            
         alert-sound:
           name: Alert sound before announcement
           description: Select optional start of the announcement with an alert sound (on/off)
@@ -51,14 +56,8 @@ blueprint:
             boolean:
           default: false
 
-
-    my_section:
-      name: Alert tone selection
-      description: Select alert sound and media player for the optional sound before the voice announcement
-      input:
-            
         play-alert:
-          name: Notification sound
+          name: Notification sound selection
           description: Select the same media player as above and a sound file with the desired notification sound
           selector:
             media:
@@ -76,7 +75,13 @@ fields:
     name: message
     required: true
 
+variables:
+  act_mp: !input media-play
+
 sequence:
+  - variables:
+      act_playing: >
+        {{ is_state( act_mp,'playing') }}
   - if:
       - condition: state
         entity_id: !input say-on-off
@@ -99,7 +104,7 @@ sequence:
           - service:  media_player.play_media
             data: !input play-alert
             enabled: !input alert-sound
-
+ 
           - service: tts.speak
             target:
               entity_id: !input tts-entity
@@ -108,6 +113,13 @@ sequence:
               message: >
                 {{message}}     
               media_player_entity_id: !input media-play
+          - if:
+              - condition: template
+                value_template: "{{ act_playing }}"
+            then:
+              - service: media_player.media_play
+                target:
+                  entity_id: !input media-play
         else:
           - stop: Media player not ready
 
